@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Menu, Send, Loader2 } from "lucide-react";
+import { Menu, Send, Loader2, Trash2 } from "lucide-react";
 import { SettingsForm } from "@/components/settings-form";
 import { Separator } from "@/components/ui/separator";
 import { ChatMessage } from "@/components/chat-message";
@@ -212,24 +212,28 @@ export default function Home() {
               <span className="sr-only">{t.openSettings}</span>
             </Button>
           </SheetTrigger>
-          <SheetContent className="w-full max-w-md sm:max-w-lg bg-background/95 backdrop-blur-sm">
+          <SheetContent className="w-full max-w-md sm:max-w-lg bg-background/95 backdrop-blur-sm flex flex-col">
             <SheetHeader>
               <SheetTitle className="font-headline text-2xl text-primary">{t.settingsTitle}</SheetTitle>
             </SheetHeader>
             <Separator className="my-4" />
-            <SettingsForm
-              setAvatarUrl={setAvatarUrl}
-              setInteractionStyle={setInteractionStyle}
-              currentStyle={interactionStyle}
-              closeSheet={() => setSheetOpen(false)}
-              setBotName={setBotName}
-              currentBotName={botName}
-              setLanguage={setLanguage}
-              currentLanguage={language}
-              handleClearChat={handleClearChat}
-              setTheme={setTheme}
-              currentTheme={theme}
-            />
+            <ScrollArea className="flex-1">
+              <div className="pr-4">
+                <SettingsForm
+                  setAvatarUrl={setAvatarUrl}
+                  setInteractionStyle={setInteractionStyle}
+                  currentStyle={interactionStyle}
+                  closeSheet={() => setSheetOpen(false)}
+                  setBotName={setBotName}
+                  currentBotName={botName}
+                  setLanguage={setLanguage}
+                  currentLanguage={language}
+                  handleClearChat={handleClearChat}
+                  setTheme={setTheme}
+                  currentTheme={theme}
+                />
+              </div>
+            </ScrollArea>
           </SheetContent>
         </Sheet>
       </header>
