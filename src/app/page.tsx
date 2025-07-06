@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Menu, Send, Loader2 } from "lucide-react";
+import { Menu, Send, Loader2, Trash2 } from "lucide-react";
 import { SettingsForm } from "@/components/settings-form";
 import { Separator } from "@/components/ui/separator";
 import { ChatMessage } from "@/components/chat-message";
@@ -34,6 +34,7 @@ const translations = {
     placeholder: 'Ask me anything...',
     sendMessage: 'Send message',
     errorMessage: "Sorry, I encountered an error. Please try again.",
+    clearChat: "Clear Chat",
   },
   id: {
     initialMessage: 'Halo! Ada yang bisa saya bantu hari ini? Anda dapat menyesuaikan avatar dan kepribadian saya di menu pengaturan di kanan atas.',
@@ -44,6 +45,7 @@ const translations = {
     placeholder: 'Tanyakan apa saja...',
     sendMessage: 'Kirim pesan',
     errorMessage: "Maaf, terjadi kesalahan. Silakan coba lagi.",
+    clearChat: "Bersihkan Obrolan",
   },
 };
 
@@ -183,6 +185,11 @@ export default function Home() {
     }
   };
 
+  const handleClearChat = () => {
+    setMessages([{ id: '1', role: 'assistant', content: t.initialMessage }]);
+    localStorage.removeItem("chatMessages");
+  };
+
   return (
     <div className="flex h-full flex-col bg-background font-body">
       <header className="flex items-center justify-between p-3 border-b shadow-sm bg-card/50 backdrop-blur-sm sticky top-0 z-10">
@@ -251,19 +258,30 @@ export default function Home() {
       </main>
 
       <footer className="p-4 border-t bg-card/50">
-        <form onSubmit={handleSubmit} className="flex items-center gap-3">
-          <Input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder={t.placeholder}
-            className="flex-1 text-base py-6 rounded-full"
-            disabled={isLoading}
-            aria-label="Chat input"
-          />
-          <Button type="submit" size="icon" disabled={isLoading} className="rounded-full w-12 h-12" aria-label={t.sendMessage}>
-            <Send className="h-5 w-5" />
+        <div className="flex items-center gap-3">
+          <form onSubmit={handleSubmit} className="flex-1 flex items-center gap-3">
+            <Input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder={t.placeholder}
+              className="flex-1 text-base py-6 rounded-full"
+              disabled={isLoading}
+              aria-label="Chat input"
+            />
+            <Button type="submit" size="icon" disabled={isLoading} className="rounded-full w-12 h-12" aria-label={t.sendMessage}>
+              <Send className="h-5 w-5" />
+            </Button>
+          </form>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={handleClearChat}
+            className="rounded-full w-12 h-12"
+            aria-label={t.clearChat}
+          >
+            <Trash2 className="h-5 w-5" />
           </Button>
-        </form>
+        </div>
       </footer>
     </div>
   );
