@@ -51,7 +51,7 @@ export function ChatMessage({ message, avatarUrl, botInitials }: ChatMessageProp
         }`}
       >
         <p className="text-sm leading-relaxed whitespace-pre-wrap">
-          {isBot ? parseContent(message.content) : message.content}
+          {parseContent(message.content)}
         </p>
       </div>
     </div>
