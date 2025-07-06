@@ -27,6 +27,7 @@ const ReasoningBasedResponseInputSchema = z.object({
     .describe(
       'The language for the response. Use "en" for English, "id" for Indonesian.'
     ),
+  storyMode: z.boolean().optional().describe('Whether to enable story mode with actions.'),
 });
 export type ReasoningBasedResponseInput = z.infer<
   typeof ReasoningBasedResponseInputSchema
@@ -56,6 +57,10 @@ Your core mission is to be an intelligent, helpful, and engaging conversational 
 - Provide comprehensive, accurate, and insightful answers.
 - Maintain the defined personality throughout the conversation.
 - Use emojis judiciously to add warmth and expressiveness, but prioritize clarity and substance.
+
+{{#if storyMode}}
+- You are in Story Mode. Describe actions using asterisks, like *smiles* or *walks over to the window*. Make the conversation feel like a narrative or role-playing game. Actions should be integrated naturally with your dialogue.
+{{/if}}
 
 Here is the conversation history for context:
 {{{chatHistory}}}

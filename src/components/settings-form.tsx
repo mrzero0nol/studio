@@ -26,6 +26,8 @@ import {
 } from "@/components/ui/accordion";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Loader2, Wand2, Trash2 } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -80,6 +82,8 @@ interface SettingsFormProps {
   handleClearChat: () => void;
   setTheme: (theme: Theme) => void;
   currentTheme: Theme;
+  setStoryMode: (enabled: boolean) => void;
+  currentStoryMode: boolean;
 }
 
 const translations = {
@@ -126,6 +130,9 @@ const translations = {
       themeSunset: "Sunset Glow",
       themeOcean: "Ocean Breeze",
       themeForest: "Forest Whisper",
+      storyModeTitle: "Story Mode",
+      storyModeLabel: "Enable Story Mode",
+      storyModeHint: "Allows the bot to use narrative actions, like *smiles*.",
       dangerZoneTitle: "Clear Chat",
       clearChatButtonLabel: "Clear chat history",
       clearChatDialogTitle: "Are you absolutely sure?",
@@ -176,6 +183,9 @@ const translations = {
       themeSunset: "Pijar Senja",
       themeOcean: "Angin Laut",
       themeForest: "Bisikan Hutan",
+      storyModeTitle: "Mode Cerita",
+      storyModeLabel: "Aktifkan Mode Cerita",
+      storyModeHint: "Izinkan bot menggunakan tindakan naratif, seperti *tersenyum*.",
       dangerZoneTitle: "Bersihkan Chat",
       clearChatButtonLabel: "Bersihkan riwayat obrolan",
       clearChatDialogTitle: "Apakah Anda benar-benar yakin?",
@@ -197,6 +207,8 @@ export function SettingsForm({
   handleClearChat,
   setTheme,
   currentTheme,
+  setStoryMode,
+  currentStoryMode,
 }: SettingsFormProps) {
   const { toast } = useToast();
   const [isAvatarLoading, setIsAvatarLoading] = useState(false);
@@ -531,6 +543,24 @@ export function SettingsForm({
               </Button>
             </form>
           </Form>
+        </AccordionContent>
+      </AccordionItem>
+       <AccordionItem value="story-mode">
+        <AccordionTrigger className="text-lg">{t.storyModeTitle}</AccordionTrigger>
+        <AccordionContent>
+          <div className="space-y-4">
+            <div className="flex flex-row items-center justify-between rounded-lg border p-4">
+              <div className="space-y-0.5">
+                <Label htmlFor="story-mode-switch" className="text-base">{t.storyModeLabel}</Label>
+                <p className="text-sm text-muted-foreground">{t.storyModeHint}</p>
+              </div>
+              <Switch
+                id="story-mode-switch"
+                checked={currentStoryMode}
+                onCheckedChange={setStoryMode}
+              />
+            </div>
+          </div>
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="danger">

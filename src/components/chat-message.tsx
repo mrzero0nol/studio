@@ -9,6 +9,24 @@ interface ChatMessageProps {
   botInitials: string;
 }
 
+function parseContent(content: string) {
+  const parts = content.split(/(\*.*?\*)/g);
+  return (
+    <>
+      {parts.map((part, index) => {
+        if (part.startsWith("*") && part.endsWith("*")) {
+          return (
+            <em key={index} className="italic text-muted-foreground">
+              {part.slice(1, -1)}
+            </em>
+          );
+        }
+        return part;
+      })}
+    </>
+  );
+}
+
 export function ChatMessage({ message, avatarUrl, botInitials }: ChatMessageProps) {
   const isBot = message.role === "assistant";
   return (
@@ -32,7 +50,9 @@ export function ChatMessage({ message, avatarUrl, botInitials }: ChatMessageProp
             : "bg-primary text-primary-foreground rounded-br-none"
         }`}
       >
-        <p className="text-sm leading-relaxed">{message.content}</p>
+        <p className="text-sm leading-relaxed whitespace-pre-wrap">
+          {isBot ? parseContent(message.content) : message.content}
+        </p>
       </div>
     </div>
   );

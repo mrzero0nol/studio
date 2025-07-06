@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Menu, Send, Loader2, Trash2 } from "lucide-react";
+import { Menu, Send, Loader2 } from "lucide-react";
 import { SettingsForm } from "@/components/settings-form";
 import { Separator } from "@/components/ui/separator";
 import { ChatMessage } from "@/components/chat-message";
@@ -57,6 +57,7 @@ export default function Home() {
   const [interactionStyle, setInteractionStyle] = useState("a friendly and empathetic companion who communicates in a natural, conversational manner, like a real person. Use casual language, be expressive with emojis, and avoid sounding robotic.");
   const [botName, setBotName] = useState("PersonaForge");
   const [messages, setMessages] = useState<Message[]>([]);
+  const [storyMode, setStoryMode] = useState(false);
 
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -73,7 +74,7 @@ export default function Home() {
 
     const savedLanguage = localStorage.getItem("language");
     if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'id')) {
-      setLanguage(savedLanguage);
+      setLanguage(savedLanguage as 'en' | 'id');
     }
 
     const savedBotName = localStorage.getItem("botName");
@@ -89,6 +90,11 @@ export default function Home() {
     const savedInteractionStyle = localStorage.getItem("interactionStyle");
     if (savedInteractionStyle) {
       setInteractionStyle(savedInteractionStyle);
+    }
+    
+    const savedStoryMode = localStorage.getItem("storyMode");
+    if (savedStoryMode) {
+      setStoryMode(JSON.parse(savedStoryMode));
     }
 
     const savedMessages = localStorage.getItem("chatMessages");
@@ -124,6 +130,10 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem("interactionStyle", interactionStyle);
   }, [interactionStyle]);
+
+  useEffect(() => {
+    localStorage.setItem("storyMode", JSON.stringify(storyMode));
+  }, [storyMode]);
 
   useEffect(() => {
     localStorage.setItem("theme", theme);
@@ -162,6 +172,7 @@ export default function Home() {
         characterSettings: `Your interaction style is: ${interactionStyle}.`,
         chatHistory,
         language: language,
+        storyMode: storyMode,
       });
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -231,6 +242,8 @@ export default function Home() {
                   handleClearChat={handleClearChat}
                   setTheme={setTheme}
                   currentTheme={theme}
+                  setStoryMode={setStoryMode}
+                  currentStoryMode={storyMode}
                 />
               </div>
             </ScrollArea>
