@@ -26,7 +26,6 @@ export type Message = {
 
 const translations = {
   en: {
-    initialMessage: 'Hello! How can I help you today? You can customize my avatar and personality in the settings menu in the top right.',
     online: 'Online',
     openSettings: 'Open Settings',
     settingsTitle: 'Settings',
@@ -37,7 +36,6 @@ const translations = {
     clearChat: "Clear Chat",
   },
   id: {
-    initialMessage: 'Halo! Ada yang bisa saya bantu hari ini? Anda dapat menyesuaikan avatar dan kepribadian saya di menu pengaturan di kanan atas.',
     online: 'Daring',
     openSettings: 'Buka Pengaturan',
     settingsTitle: 'Pengaturan',
@@ -55,9 +53,7 @@ export default function Home() {
   const [avatarUrl, setAvatarUrl] = useState("https://placehold.co/128x128/9400D3/FFFFFF.png?text=PF");
   const [interactionStyle, setInteractionStyle] = useState("a friendly and empathetic companion who communicates in a natural, conversational manner, like a real person. Use casual language and avoid sounding robotic.");
   const [botName, setBotName] = useState("PersonaForge");
-  const [messages, setMessages] = useState<Message[]>([
-    { id: '1', role: 'assistant', content: translations.en.initialMessage }
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -91,17 +87,13 @@ export default function Home() {
     if (savedMessages) {
       try {
         const parsedMessages = JSON.parse(savedMessages);
-        if (Array.isArray(parsedMessages) && parsedMessages.length > 0) {
+        if (Array.isArray(parsedMessages)) {
           setMessages(parsedMessages);
         }
       } catch (e) {
         console.error("Failed to parse messages from localStorage", e);
-        const lang = (localStorage.getItem("language") as 'en' | 'id') || 'en';
-        setMessages([{ id: '1', role: 'assistant', content: translations[lang].initialMessage }]);
+        setMessages([]);
       }
-    } else {
-      const lang = (localStorage.getItem("language") as 'en' | 'id') || 'en';
-      setMessages([{ id: '1', role: 'assistant', content: translations[lang].initialMessage }]);
     }
   }, []);
 
@@ -126,10 +118,7 @@ export default function Home() {
   }, [interactionStyle]);
 
   useEffect(() => {
-    // Don't save initial default message on first load
-    if (messages.length > 1 || (messages.length === 1 && messages[0].id !== '1')) {
-      localStorage.setItem("chatMessages", JSON.stringify(messages));
-    }
+    localStorage.setItem("chatMessages", JSON.stringify(messages));
   }, [messages]);
 
   useEffect(() => {
@@ -137,16 +126,6 @@ export default function Home() {
       scrollAreaViewportRef.current.scrollTop = scrollAreaViewportRef.current.scrollHeight;
     }
   }, [messages]);
-  
-  // Update initial message content when language changes and no conversation has started
-  useEffect(() => {
-    setMessages(msgs => {
-      if (msgs.length === 1 && msgs[0].id === '1') {
-        return [{ ...msgs[0], content: t.initialMessage }];
-      }
-      return msgs;
-    });
-  }, [t.initialMessage]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -186,8 +165,7 @@ export default function Home() {
   };
 
   const handleClearChat = () => {
-    setMessages([{ id: '1', role: 'assistant', content: t.initialMessage }]);
-    localStorage.removeItem("chatMessages");
+    setMessages([]);
   };
 
   return (
