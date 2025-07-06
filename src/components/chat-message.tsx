@@ -7,9 +7,10 @@ import type { Message } from "@/app/page";
 interface ChatMessageProps {
   message: Message;
   avatarUrl: string;
+  botInitials: string;
 }
 
-export function ChatMessage({ message, avatarUrl }: ChatMessageProps) {
+export function ChatMessage({ message, avatarUrl, botInitials }: ChatMessageProps) {
   const isBot = message.role === "assistant";
   return (
     <div
@@ -21,7 +22,7 @@ export function ChatMessage({ message, avatarUrl }: ChatMessageProps) {
         <Avatar className="h-10 w-10 shadow-sm flex-shrink-0">
           <AvatarImage src={avatarUrl} alt="PersonaForge Avatar" />
           <AvatarFallback className="bg-primary/20 text-primary">
-            PF
+            {botInitials}
           </AvatarFallback>
         </Avatar>
       )}

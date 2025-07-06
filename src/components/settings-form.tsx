@@ -32,6 +32,14 @@ const avatarFormSchema = z.object({
   }),
 });
 
+const nameFormSchema = z.object({
+  name: z.string().min(1, {
+    message: "Name cannot be empty.",
+  }).max(20, {
+    message: "Name cannot be longer than 20 characters.",
+  }),
+});
+
 const styleFormSchema = z.object({
   style: z.string().min(5, {
     message: "Style must be at least 5 characters.",
@@ -43,6 +51,8 @@ interface SettingsFormProps {
   setInteractionStyle: (style: string) => void;
   currentStyle: string;
   closeSheet: () => void;
+  setBotName: (name: string) => void;
+  currentBotName: string;
 }
 
 export function SettingsForm({
@@ -50,6 +60,8 @@ export function SettingsForm({
   setInteractionStyle,
   currentStyle,
   closeSheet,
+  setBotName,
+  currentBotName,
 }: SettingsFormProps) {
   const { toast } = useToast();
   const [isAvatarLoading, setIsAvatarLoading] = useState(false);
@@ -59,6 +71,13 @@ export function SettingsForm({
     resolver: zodResolver(avatarFormSchema),
     defaultValues: {
       description: "A friendly, futuristic robot with a purple and blue color scheme.",
+    },
+  });
+
+  const nameForm = useForm<z.infer<typeof nameFormSchema>>({
+    resolver: zodResolver(nameFormSchema),
+    defaultValues: {
+      name: currentBotName,
     },
   });
 
@@ -89,6 +108,15 @@ export function SettingsForm({
     } finally {
       setIsAvatarLoading(false);
     }
+  }
+  
+  function onNameSubmit(values: z.infer<typeof nameFormSchema>) {
+    setBotName(values.name);
+    toast({
+      title: "Bot Name Updated!",
+      description: `The bot's name is now ${values.name}.`,
+    });
+    closeSheet();
   }
 
   async function onStyleSubmit(values: z.infer<typeof styleFormSchema>) {
@@ -146,6 +174,34 @@ export function SettingsForm({
                   <Wand2 className="mr-2 h-4 w-4" />
                 )}
                 Generate Avatar
+              </Button>
+            </form>
+          </Form>
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="name">
+        <AccordionTrigger className="text-lg">Bot Name</AccordionTrigger>
+        <AccordionContent>
+          <Form {...nameForm}>
+            <form onSubmit={nameForm.handleSubmit(onNameSubmit)} className="space-y-6">
+              <FormField
+                control={nameForm.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Bot Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., PersonaForge" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      Give your bot a unique name.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit" className="w-full">
+                Save Name
               </Button>
             </form>
           </Form>

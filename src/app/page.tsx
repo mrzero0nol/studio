@@ -32,9 +32,12 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState("https://placehold.co/128x128/9400D3/FFFFFF.png?text=PF");
   const [interactionStyle, setInteractionStyle] = useState("a creative and imaginative assistant");
+  const [botName, setBotName] = useState("PersonaForge");
   const [sheetOpen, setSheetOpen] = useState(false);
 
   const scrollAreaViewportRef = useRef<HTMLDivElement>(null);
+
+  const botInitials = botName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
 
   useEffect(() => {
     if (scrollAreaViewportRef.current) {
@@ -84,10 +87,10 @@ export default function Home() {
         <div className="flex items-center gap-3">
           <Avatar className="w-12 h-12 border-2 border-primary/50">
             <AvatarImage src={avatarUrl} alt="PersonaForge Avatar" data-ai-hint="robot avatar" />
-            <AvatarFallback>PF</AvatarFallback>
+            <AvatarFallback>{botInitials}</AvatarFallback>
           </Avatar>
           <div>
-            <h1 className="text-xl font-bold font-headline text-primary">PersonaForge</h1>
+            <h1 className="text-xl font-bold font-headline text-primary">{botName}</h1>
             <p className="text-sm text-muted-foreground flex items-center gap-1.5">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
@@ -114,6 +117,8 @@ export default function Home() {
               setInteractionStyle={setInteractionStyle}
               currentStyle={interactionStyle}
               closeSheet={() => setSheetOpen(false)}
+              setBotName={setBotName}
+              currentBotName={botName}
             />
           </SheetContent>
         </Sheet>
@@ -123,13 +128,13 @@ export default function Home() {
         <ScrollArea className="h-full" viewportRef={scrollAreaViewportRef}>
           <div className="p-4 space-y-6">
             {messages.map((m) => (
-              <ChatMessage key={m.id} message={m} avatarUrl={avatarUrl} />
+              <ChatMessage key={m.id} message={m} avatarUrl={avatarUrl} botInitials={botInitials} />
             ))}
             {isLoading && (
               <div className="flex items-end gap-3 justify-start">
                  <Avatar className="h-10 w-10 shadow-sm flex-shrink-0">
                     <AvatarImage src={avatarUrl} alt="PersonaForge Avatar" />
-                    <AvatarFallback className='bg-primary/20 text-primary'>PF</AvatarFallback>
+                    <AvatarFallback className='bg-primary/20 text-primary'>{botInitials}</AvatarFallback>
                 </Avatar>
                 <div className="flex items-center gap-2 p-4 rounded-2xl rounded-bl-none bg-card shadow-md">
                   <Loader2 className="h-5 w-5 animate-spin text-primary" />
