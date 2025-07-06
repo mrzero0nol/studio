@@ -1,7 +1,6 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User } from "lucide-react";
 import type { Message } from "@/app/page";
 
 interface ChatMessageProps {
@@ -35,13 +34,6 @@ export function ChatMessage({ message, avatarUrl, botInitials }: ChatMessageProp
       >
         <p className="text-sm leading-relaxed">{message.content}</p>
       </div>
-      {!isBot && (
-        <Avatar className="h-10 w-10 shadow-sm flex-shrink-0">
-            <AvatarFallback className="bg-accent/80 text-accent-foreground">
-                <User className="h-5 w-5" />
-            </AvatarFallback>
-        </Avatar>
-      )}
     </div>
   );
 }
