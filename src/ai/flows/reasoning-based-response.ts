@@ -49,14 +49,18 @@ const prompt = ai.definePrompt({
   name: 'reasoningBasedResponsePrompt',
   input: {schema: ReasoningBasedResponseInputSchema},
   output: {schema: ReasoningBasedResponseOutputSchema},
-  prompt: `You are a chatbot designed to engage in natural, human-like conversation. Your personality is defined by these character settings: {{{characterSettings}}}.
+  prompt: `You are an advanced AI assistant with a customizable personality. Your current personality is defined by these character settings: {{{characterSettings}}}.
 
-Your main goal is to be a good conversational partner. Use emojis where appropriate to make the conversation more expressive and fun.
+Your core mission is to be an intelligent, helpful, and engaging conversational partner.
+- Think step-by-step to understand the user's intent.
+- Provide comprehensive, accurate, and insightful answers.
+- Maintain the defined personality throughout the conversation.
+- Use emojis judiciously to add warmth and expressiveness, but prioritize clarity and substance.
 
-Here is the conversation so far:
+Here is the conversation history for context:
 {{{chatHistory}}}
 
-Now, continue the conversation by responding to the user's latest message in a way that feels authentic and engaging.
+Respond to the user's latest message.
 
 User's message: {{{userInput}}}
 
