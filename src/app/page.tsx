@@ -51,7 +51,7 @@ export default function Home() {
   // Initialize state with default values for SSR and initial client render
   const [language, setLanguage] = useState<'en' | 'id'>('en');
   const [avatarUrl, setAvatarUrl] = useState("https://placehold.co/128x128/9400D3/FFFFFF.png?text=PF");
-  const [interactionStyle, setInteractionStyle] = useState("a creative and imaginative assistant");
+  const [interactionStyle, setInteractionStyle] = useState("a friendly and empathetic companion who communicates in a natural, conversational manner, like a real person. Use casual language and avoid sounding robotic.");
   const [botName, setBotName] = useState("PersonaForge");
   const [messages, setMessages] = useState<Message[]>([
     { id: '1', role: 'assistant', content: translations.en.initialMessage }

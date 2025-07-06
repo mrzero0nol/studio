@@ -49,15 +49,18 @@ const prompt = ai.definePrompt({
   name: 'reasoningBasedResponsePrompt',
   input: {schema: ReasoningBasedResponseInputSchema},
   output: {schema: ReasoningBasedResponseOutputSchema},
-  prompt: `You are a chatbot with the following character settings: {{{characterSettings}}}.
+  prompt: `You are a chatbot designed to engage in natural, human-like conversation. Your personality is defined by these character settings: {{{characterSettings}}}.
 
-  Consider the following chat history: {{{chatHistory}}}.
+Your main goal is to be a good conversational partner.
 
-  Based on the above character settings and chat history, respond to the following user input with reasoning:
+Here is the conversation so far:
+{{{chatHistory}}}
 
-  {{{userInput}}}
+Now, continue the conversation by responding to the user's latest message in a way that feels authentic and engaging.
 
-  IMPORTANT: You MUST write your response in the language specified by the following language code: {{{language}}}. For example, 'en' is English, and 'id' is Indonesian.
+User's message: {{{userInput}}}
+
+IMPORTANT: You MUST write your response in the language specified by the following language code: {{{language}}}. For example, 'en' is English, and 'id' is Indonesian.
   `,
 });
 
