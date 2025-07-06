@@ -48,22 +48,87 @@ const translations = {
 };
 
 export default function Home() {
+  // Initialize state with default values for SSR and initial client render
   const [language, setLanguage] = useState<'en' | 'id'>('en');
-  const t = translations[language];
-
-  const [messages, setMessages] = useState<Message[]>([
-    { id: '1', role: 'assistant', content: t.initialMessage }
-  ]);
-  const [input, setInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState("https://placehold.co/128x128/9400D3/FFFFFF.png?text=PF");
   const [interactionStyle, setInteractionStyle] = useState("a creative and imaginative assistant");
   const [botName, setBotName] = useState("PersonaForge");
-  const [sheetOpen, setSheetOpen] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([
+    { id: '1', role: 'assistant', content: translations.en.initialMessage }
+  ]);
 
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
+  
   const scrollAreaViewportRef = useRef<HTMLDivElement>(null);
 
+  // Load state from localStorage on initial client mount
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem("language");
+    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'id')) {
+      setLanguage(savedLanguage);
+    }
+
+    const savedBotName = localStorage.getItem("botName");
+    if (savedBotName) {
+      setBotName(savedBotName);
+    }
+
+    const savedAvatarUrl = localStorage.getItem("avatarUrl");
+    if (savedAvatarUrl) {
+      setAvatarUrl(savedAvatarUrl);
+    }
+
+    const savedInteractionStyle = localStorage.getItem("interactionStyle");
+    if (savedInteractionStyle) {
+      setInteractionStyle(savedInteractionStyle);
+    }
+
+    const savedMessages = localStorage.getItem("chatMessages");
+    if (savedMessages) {
+      try {
+        const parsedMessages = JSON.parse(savedMessages);
+        if (Array.isArray(parsedMessages) && parsedMessages.length > 0) {
+          setMessages(parsedMessages);
+        }
+      } catch (e) {
+        console.error("Failed to parse messages from localStorage", e);
+        const lang = (localStorage.getItem("language") as 'en' | 'id') || 'en';
+        setMessages([{ id: '1', role: 'assistant', content: translations[lang].initialMessage }]);
+      }
+    } else {
+      const lang = (localStorage.getItem("language") as 'en' | 'id') || 'en';
+      setMessages([{ id: '1', role: 'assistant', content: translations[lang].initialMessage }]);
+    }
+  }, []);
+
+  const t = translations[language];
   const botInitials = botName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+
+  // Save state to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("language", language);
+  }, [language]);
+  
+  useEffect(() => {
+    localStorage.setItem("botName", botName);
+  }, [botName]);
+
+  useEffect(() => {
+    localStorage.setItem("avatarUrl", avatarUrl);
+  }, [avatarUrl]);
+
+  useEffect(() => {
+    localStorage.setItem("interactionStyle", interactionStyle);
+  }, [interactionStyle]);
+
+  useEffect(() => {
+    // Don't save initial default message on first load
+    if (messages.length > 1 || (messages.length === 1 && messages[0].id !== '1')) {
+      localStorage.setItem("chatMessages", JSON.stringify(messages));
+    }
+  }, [messages]);
 
   useEffect(() => {
     if (scrollAreaViewportRef.current) {
@@ -71,6 +136,7 @@ export default function Home() {
     }
   }, [messages]);
   
+  // Update initial message content when language changes and no conversation has started
   useEffect(() => {
     setMessages(msgs => {
       if (msgs.length === 1 && msgs[0].id === '1') {
