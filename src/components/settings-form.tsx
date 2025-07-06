@@ -37,6 +37,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import type { Theme } from "@/app/page";
 
 
 const avatarFormSchema = z.object({
@@ -63,6 +64,10 @@ const languageFormSchema = z.object({
     language: z.enum(["en", "id"]),
 });
 
+const themeFormSchema = z.object({
+  theme: z.enum(["default", "sunset", "ocean", "forest"]),
+});
+
 interface SettingsFormProps {
   setAvatarUrl: (url: string) => void;
   setInteractionStyle: (style: string) => void;
@@ -73,6 +78,8 @@ interface SettingsFormProps {
   setLanguage: (lang: 'en' | 'id') => void;
   currentLanguage: 'en' | 'id';
   handleClearChat: () => void;
+  setTheme: (theme: Theme) => void;
+  currentTheme: Theme;
 }
 
 const translations = {
@@ -109,6 +116,16 @@ const translations = {
       languageUpdatedToastDesc: 'The bot will now respond in {language}.',
       english: 'English',
       indonesian: 'Indonesian',
+      themeTitle: "UI Theme",
+      themeLabel: "Select a theme",
+      themeHint: "Customize the look and feel of the app.",
+      saveThemeButton: "Save Theme",
+      themeUpdatedToast: "Theme Updated!",
+      themeUpdatedToastDesc: "The UI theme has been changed.",
+      themeDefault: "Lavender (Default)",
+      themeSunset: "Sunset Glow",
+      themeOcean: "Ocean Breeze",
+      themeForest: "Forest Whisper",
       dangerZoneTitle: "Clear Chat",
       clearChatButtonLabel: "Clear chat history",
       clearChatDialogTitle: "Are you absolutely sure?",
@@ -149,6 +166,16 @@ const translations = {
       languageUpdatedToastDesc: 'Bot sekarang akan merespons dalam {language}.',
       english: 'English',
       indonesian: 'Bahasa Indonesia',
+      themeTitle: "Tema Tampilan",
+      themeLabel: "Pilih sebuah tema",
+      themeHint: "Ubahsuai tampilan aplikasi.",
+      saveThemeButton: "Simpan Tema",
+      themeUpdatedToast: "Tema Diperbarui!",
+      themeUpdatedToastDesc: "Tema UI telah diubah.",
+      themeDefault: "Lavender (Bawaan)",
+      themeSunset: "Pijar Senja",
+      themeOcean: "Angin Laut",
+      themeForest: "Bisikan Hutan",
       dangerZoneTitle: "Bersihkan Chat",
       clearChatButtonLabel: "Bersihkan riwayat obrolan",
       clearChatDialogTitle: "Apakah Anda benar-benar yakin?",
@@ -168,6 +195,8 @@ export function SettingsForm({
   setLanguage,
   currentLanguage,
   handleClearChat,
+  setTheme,
+  currentTheme,
 }: SettingsFormProps) {
   const { toast } = useToast();
   const [isAvatarLoading, setIsAvatarLoading] = useState(false);
@@ -200,6 +229,13 @@ export function SettingsForm({
     resolver: zodResolver(languageFormSchema),
     defaultValues: {
       language: currentLanguage,
+    },
+  });
+
+  const themeForm = useForm<z.infer<typeof themeFormSchema>>({
+    resolver: zodResolver(themeFormSchema),
+    defaultValues: {
+      theme: currentTheme,
     },
   });
 
@@ -275,6 +311,15 @@ export function SettingsForm({
     toast({
       title: t.languageUpdatedToast,
       description: t.languageUpdatedToastDesc.replace('{language}', values.language === 'en' ? t.english : t.indonesian),
+    });
+    closeSheet();
+  }
+
+  function onThemeSubmit(values: z.infer<typeof themeFormSchema>) {
+    setTheme(values.theme);
+    toast({
+      title: t.themeUpdatedToast,
+      description: t.themeUpdatedToastDesc,
     });
     closeSheet();
   }
@@ -418,6 +463,71 @@ export function SettingsForm({
               />
               <Button type="submit" className="w-full">
                 {t.saveLanguageButton}
+              </Button>
+            </form>
+          </Form>
+        </AccordionContent>
+      </AccordionItem>
+       <AccordionItem value="theme">
+        <AccordionTrigger className="text-lg">{t.themeTitle}</AccordionTrigger>
+        <AccordionContent>
+          <Form {...themeForm}>
+            <form onSubmit={themeForm.handleSubmit(onThemeSubmit)} className="space-y-6">
+              <FormField
+                control={themeForm.control}
+                name="theme"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel>{t.themeLabel}</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex flex-col space-y-1"
+                      >
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="default" />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            {t.themeDefault}
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="sunset" />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            {t.themeSunset}
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="ocean" />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            {t.themeOcean}
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="forest" />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            {t.themeForest}
+                          </FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormDescription>
+                      {t.themeHint}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit" className="w-full">
+                {t.saveThemeButton}
               </Button>
             </form>
           </Form>

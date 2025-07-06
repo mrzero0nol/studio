@@ -24,6 +24,8 @@ export type Message = {
   content: string;
 };
 
+export type Theme = "default" | "sunset" | "ocean" | "forest";
+
 const translations = {
   en: {
     online: 'Online',
@@ -49,9 +51,10 @@ const translations = {
 
 export default function Home() {
   // Initialize state with default values for SSR and initial client render
+  const [theme, setTheme] = useState<Theme>('default');
   const [language, setLanguage] = useState<'en' | 'id'>('en');
   const [avatarUrl, setAvatarUrl] = useState("https://placehold.co/128x128/9400D3/FFFFFF.png?text=PF");
-  const [interactionStyle, setInteractionStyle] = useState("a friendly and empathetic companion who communicates in a natural, conversational manner, like a real person. Use casual language and avoid sounding robotic.");
+  const [interactionStyle, setInteractionStyle] = useState("a friendly and empathetic companion who communicates in a natural, conversational manner, like a real person. Use casual language, be expressive with emojis, and avoid sounding robotic.");
   const [botName, setBotName] = useState("PersonaForge");
   const [messages, setMessages] = useState<Message[]>([]);
 
@@ -63,6 +66,11 @@ export default function Home() {
 
   // Load state from localStorage on initial client mount
   useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme && ['default', 'sunset', 'ocean', 'forest'].includes(savedTheme)) {
+      setTheme(savedTheme as Theme);
+    }
+
     const savedLanguage = localStorage.getItem("language");
     if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'id')) {
       setLanguage(savedLanguage);
@@ -116,6 +124,16 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem("interactionStyle", interactionStyle);
   }, [interactionStyle]);
+
+  useEffect(() => {
+    localStorage.setItem("theme", theme);
+    const themes: Theme[] = ['sunset', 'ocean', 'forest'];
+    document.documentElement.classList.remove(...themes.map(t => `theme-${t}`));
+
+    if (theme !== 'default') {
+        document.documentElement.classList.add(`theme-${theme}`);
+    }
+  }, [theme]);
 
   useEffect(() => {
     localStorage.setItem("chatMessages", JSON.stringify(messages));
@@ -209,6 +227,8 @@ export default function Home() {
               setLanguage={setLanguage}
               currentLanguage={language}
               handleClearChat={handleClearChat}
+              setTheme={setTheme}
+              currentTheme={theme}
             />
           </SheetContent>
         </Sheet>
