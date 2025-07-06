@@ -235,7 +235,8 @@ export default function Home() {
               </div>
             </ScrollArea>
              <div className="p-4 text-center text-sm text-muted-foreground">
-              farqonzero.dev
+              <div>V1.36.2 (beta)</div>
+              <div>farqonzero.dev</div>
             </div>
           </SheetContent>
         </Sheet>
