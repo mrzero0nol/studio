@@ -24,9 +24,35 @@ export type Message = {
   content: string;
 };
 
+const translations = {
+  en: {
+    initialMessage: 'Hello! How can I help you today? You can customize my avatar and personality in the settings menu in the top right.',
+    online: 'Online',
+    openSettings: 'Open Settings',
+    settingsTitle: 'Settings',
+    thinking: 'Thinking...',
+    placeholder: 'Ask me anything...',
+    sendMessage: 'Send message',
+    errorMessage: "Sorry, I encountered an error. Please try again.",
+  },
+  id: {
+    initialMessage: 'Halo! Ada yang bisa saya bantu hari ini? Anda dapat menyesuaikan avatar dan kepribadian saya di menu pengaturan di kanan atas.',
+    online: 'Daring',
+    openSettings: 'Buka Pengaturan',
+    settingsTitle: 'Pengaturan',
+    thinking: 'Sedang berpikir...',
+    placeholder: 'Tanyakan apa saja...',
+    sendMessage: 'Kirim pesan',
+    errorMessage: "Maaf, terjadi kesalahan. Silakan coba lagi.",
+  },
+};
+
 export default function Home() {
+  const [language, setLanguage] = useState<'en' | 'id'>('en');
+  const t = translations[language];
+
   const [messages, setMessages] = useState<Message[]>([
-    { id: '1', role: 'assistant', content: 'Hello! How can I help you today? You can customize my avatar and personality in the settings menu in the top right.' }
+    { id: '1', role: 'assistant', content: t.initialMessage }
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -44,6 +70,15 @@ export default function Home() {
       scrollAreaViewportRef.current.scrollTop = scrollAreaViewportRef.current.scrollHeight;
     }
   }, [messages]);
+  
+  useEffect(() => {
+    setMessages(msgs => {
+      if (msgs.length === 1 && msgs[0].id === '1') {
+        return [{ ...msgs[0], content: t.initialMessage }];
+      }
+      return msgs;
+    });
+  }, [t.initialMessage]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -61,6 +96,7 @@ export default function Home() {
         userInput: currentInput,
         characterSettings: `Your interaction style is: ${interactionStyle}.`,
         chatHistory,
+        language: language,
       });
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -73,7 +109,7 @@ export default function Home() {
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: "Sorry, I encountered an error. Please try again.",
+        content: t.errorMessage,
       };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
@@ -96,7 +132,7 @@ export default function Home() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
               </span>
-              Online
+              {t.online}
             </p>
           </div>
         </div>
@@ -104,12 +140,12 @@ export default function Home() {
           <SheetTrigger asChild>
             <Button variant="ghost" size="icon">
               <Menu className="h-6 w-6" />
-              <span className="sr-only">Open Settings</span>
+              <span className="sr-only">{t.openSettings}</span>
             </Button>
           </SheetTrigger>
           <SheetContent className="w-full max-w-md sm:max-w-lg bg-background/95 backdrop-blur-sm">
             <SheetHeader>
-              <SheetTitle className="font-headline text-2xl text-primary">Settings</SheetTitle>
+              <SheetTitle className="font-headline text-2xl text-primary">{t.settingsTitle}</SheetTitle>
             </SheetHeader>
             <Separator className="my-4" />
             <SettingsForm
@@ -119,6 +155,8 @@ export default function Home() {
               closeSheet={() => setSheetOpen(false)}
               setBotName={setBotName}
               currentBotName={botName}
+              setLanguage={setLanguage}
+              currentLanguage={language}
             />
           </SheetContent>
         </Sheet>
@@ -138,7 +176,7 @@ export default function Home() {
                 </Avatar>
                 <div className="flex items-center gap-2 p-4 rounded-2xl rounded-bl-none bg-card shadow-md">
                   <Loader2 className="h-5 w-5 animate-spin text-primary" />
-                  <span className="text-muted-foreground italic text-sm">Thinking...</span>
+                  <span className="text-muted-foreground italic text-sm">{t.thinking}</span>
                 </div>
               </div>
             )}
@@ -151,12 +189,12 @@ export default function Home() {
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask me anything..."
+            placeholder={t.placeholder}
             className="flex-1 text-base py-6 rounded-full"
             disabled={isLoading}
             aria-label="Chat input"
           />
-          <Button type="submit" size="icon" disabled={isLoading} className="rounded-full w-12 h-12" aria-label="Send message">
+          <Button type="submit" size="icon" disabled={isLoading} className="rounded-full w-12 h-12" aria-label={t.sendMessage}>
             <Send className="h-5 w-5" />
           </Button>
         </form>

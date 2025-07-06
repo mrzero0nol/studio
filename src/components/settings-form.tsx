@@ -24,6 +24,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Loader2, Wand2 } from "lucide-react";
 
 const avatarFormSchema = z.object({
@@ -46,6 +47,10 @@ const styleFormSchema = z.object({
   }),
 });
 
+const languageFormSchema = z.object({
+    language: z.enum(["en", "id"]),
+});
+
 interface SettingsFormProps {
   setAvatarUrl: (url: string) => void;
   setInteractionStyle: (style: string) => void;
@@ -53,7 +58,80 @@ interface SettingsFormProps {
   closeSheet: () => void;
   setBotName: (name: string) => void;
   currentBotName: string;
+  setLanguage: (lang: 'en' | 'id') => void;
+  currentLanguage: 'en' | 'id';
 }
+
+const translations = {
+    en: {
+      avatarTitle: 'Avatar Generation',
+      avatarDescriptionLabel: 'Avatar Description',
+      avatarDescriptionPlaceholder: 'e.g., a wizard cat wearing a starry robe',
+      avatarDescriptionHint: 'Describe the avatar you want to create.',
+      generateAvatarButton: 'Generate Avatar',
+      avatarGeneratedToast: 'Avatar Generated!',
+      avatarGeneratedToastDesc: 'Your new avatar is ready.',
+      avatarErrorToast: 'Uh oh! Something went wrong.',
+      avatarErrorToastDesc: 'Could not generate the avatar. Please try again.',
+      nameTitle: 'Bot Name',
+      nameLabel: 'Bot Name',
+      namePlaceholder: 'e.g., PersonaForge',
+      nameHint: 'Give your bot a unique name.',
+      saveNameButton: 'Save Name',
+      nameUpdatedToast: 'Bot Name Updated!',
+      nameUpdatedToastDesc: "The bot's name is now {name}.",
+      styleTitle: 'Interaction Style',
+      styleLabel: 'Bot Personality',
+      stylePlaceholder: 'e.g., friendly and helpful',
+      styleHint: 'How should the bot behave? (e.g., formal, witty, sarcastic)',
+      saveStyleButton: 'Save Style',
+      styleUpdatedToast: 'Interaction Style Updated!',
+      styleUpdatedToastDesc: 'The bot will now respond in a {style} manner.',
+      styleErrorToastDesc: 'Could not update the interaction style.',
+      languageTitle: 'Language',
+      languageLabel: 'Response Language',
+      languageHint: 'Choose the language for the bot to respond in.',
+      saveLanguageButton: 'Save Language',
+      languageUpdatedToast: 'Language Updated!',
+      languageUpdatedToastDesc: 'The bot will now respond in {language}.',
+      english: 'English',
+      indonesian: 'Indonesian',
+    },
+    id: {
+      avatarTitle: 'Pembuatan Avatar',
+      avatarDescriptionLabel: 'Deskripsi Avatar',
+      avatarDescriptionPlaceholder: 'contoh: kucing penyihir berjubah bintang',
+      avatarDescriptionHint: 'Jelaskan avatar yang ingin Anda buat.',
+      generateAvatarButton: 'Buat Avatar',
+      avatarGeneratedToast: 'Avatar Dibuat!',
+      avatarGeneratedToastDesc: 'Avatar baru Anda sudah siap.',
+      avatarErrorToast: 'Oh tidak! Terjadi kesalahan.',
+      avatarErrorToastDesc: 'Tidak dapat membuat avatar. Silakan coba lagi.',
+      nameTitle: 'Nama Bot',
+      nameLabel: 'Nama Bot',
+      namePlaceholder: 'contoh: PersonaForge',
+      nameHint: 'Berikan nama unik untuk bot Anda.',
+      saveNameButton: 'Simpan Nama',
+      nameUpdatedToast: 'Nama Bot Diperbarui!',
+      nameUpdatedToastDesc: 'Nama bot sekarang adalah {name}.',
+      styleTitle: 'Gaya Interaksi',
+      styleLabel: 'Kepribadian Bot',
+      stylePlaceholder: 'contoh: ramah dan membantu',
+      styleHint: 'Bagaimana bot harus berperilaku? (misalnya formal, jenaka, sarkastik)',
+      saveStyleButton: 'Simpan Gaya',
+      styleUpdatedToast: 'Gaya Interaksi Diperbarui!',
+      styleUpdatedToastDesc: 'Bot sekarang akan merespons dengan gaya {style}.',
+      styleErrorToastDesc: 'Tidak dapat memperbarui gaya interaksi.',
+      languageTitle: 'Bahasa',
+      languageLabel: 'Bahasa Respons',
+      languageHint: 'Pilih bahasa respons bot.',
+      saveLanguageButton: 'Simpan Bahasa',
+      languageUpdatedToast: 'Bahasa Diperbarui!',
+      languageUpdatedToastDesc: 'Bot sekarang akan merespons dalam {language}.',
+      english: 'English',
+      indonesian: 'Bahasa Indonesia',
+    }
+  };
 
 export function SettingsForm({
   setAvatarUrl,
@@ -62,10 +140,14 @@ export function SettingsForm({
   closeSheet,
   setBotName,
   currentBotName,
+  setLanguage,
+  currentLanguage,
 }: SettingsFormProps) {
   const { toast } = useToast();
   const [isAvatarLoading, setIsAvatarLoading] = useState(false);
   const [isStyleLoading, setIsStyleLoading] = useState(false);
+  
+  const t = translations[currentLanguage];
 
   const avatarForm = useForm<z.infer<typeof avatarFormSchema>>({
     resolver: zodResolver(avatarFormSchema),
@@ -88,22 +170,29 @@ export function SettingsForm({
     },
   });
 
+  const languageForm = useForm<z.infer<typeof languageFormSchema>>({
+    resolver: zodResolver(languageFormSchema),
+    defaultValues: {
+      language: currentLanguage,
+    },
+  });
+
   async function onAvatarSubmit(values: z.infer<typeof avatarFormSchema>) {
     setIsAvatarLoading(true);
     try {
       const result = await createAvatar({ description: values.description });
       setAvatarUrl(result.avatarDataUri);
       toast({
-        title: "Avatar Generated!",
-        description: "Your new avatar is ready.",
+        title: t.avatarGeneratedToast,
+        description: t.avatarGeneratedToastDesc,
       });
       closeSheet();
     } catch (error) {
       console.error("Avatar generation failed:", error);
       toast({
         variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: "Could not generate the avatar. Please try again.",
+        title: t.avatarErrorToast,
+        description: t.avatarErrorToastDesc,
       });
     } finally {
       setIsAvatarLoading(false);
@@ -113,8 +202,8 @@ export function SettingsForm({
   function onNameSubmit(values: z.infer<typeof nameFormSchema>) {
     setBotName(values.name);
     toast({
-      title: "Bot Name Updated!",
-      description: `The bot's name is now ${values.name}.`,
+      title: t.nameUpdatedToast,
+      description: t.nameUpdatedToastDesc.replace('{name}', values.name),
     });
     closeSheet();
   }
@@ -125,26 +214,35 @@ export function SettingsForm({
       const result = await setStyle({ interactionStyle: values.style });
       setInteractionStyle(result.configuredStyle);
       toast({
-        title: "Interaction Style Updated!",
-        description: `The bot will now respond in a ${result.configuredStyle} manner.`,
+        title: t.styleUpdatedToast,
+        description: t.styleUpdatedToastDesc.replace('{style}', result.configuredStyle),
       });
       closeSheet();
     } catch (error) {
       console.error("Style configuration failed:", error);
       toast({
         variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: "Could not update the interaction style.",
+        title: t.avatarErrorToast,
+        description: t.styleErrorToastDesc,
       });
     } finally {
       setIsStyleLoading(false);
     }
   }
 
+  function onLanguageSubmit(values: z.infer<typeof languageFormSchema>) {
+    setLanguage(values.language);
+    toast({
+      title: t.languageUpdatedToast,
+      description: t.languageUpdatedToastDesc.replace('{language}', values.language === 'en' ? t.english : t.indonesian),
+    });
+    closeSheet();
+  }
+
   return (
     <Accordion type="single" collapsible className="w-full" defaultValue="avatar">
       <AccordionItem value="avatar">
-        <AccordionTrigger className="text-lg">Avatar Generation</AccordionTrigger>
+        <AccordionTrigger className="text-lg">{t.avatarTitle}</AccordionTrigger>
         <AccordionContent>
           <Form {...avatarForm}>
             <form onSubmit={avatarForm.handleSubmit(onAvatarSubmit)} className="space-y-6">
@@ -153,15 +251,15 @@ export function SettingsForm({
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Avatar Description</FormLabel>
+                    <FormLabel>{t.avatarDescriptionLabel}</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="e.g., a wizard cat wearing a starry robe"
+                        placeholder={t.avatarDescriptionPlaceholder}
                         {...field}
                       />
                     </FormControl>
                     <FormDescription>
-                      Describe the avatar you want to create.
+                      {t.avatarDescriptionHint}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -173,14 +271,14 @@ export function SettingsForm({
                 ) : (
                   <Wand2 className="mr-2 h-4 w-4" />
                 )}
-                Generate Avatar
+                {t.generateAvatarButton}
               </Button>
             </form>
           </Form>
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="name">
-        <AccordionTrigger className="text-lg">Bot Name</AccordionTrigger>
+        <AccordionTrigger className="text-lg">{t.nameTitle}</AccordionTrigger>
         <AccordionContent>
           <Form {...nameForm}>
             <form onSubmit={nameForm.handleSubmit(onNameSubmit)} className="space-y-6">
@@ -189,26 +287,26 @@ export function SettingsForm({
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Bot Name</FormLabel>
+                    <FormLabel>{t.nameLabel}</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., PersonaForge" {...field} />
+                      <Input placeholder={t.namePlaceholder} {...field} />
                     </FormControl>
                     <FormDescription>
-                      Give your bot a unique name.
+                      {t.nameHint}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <Button type="submit" className="w-full">
-                Save Name
+                {t.saveNameButton}
               </Button>
             </form>
           </Form>
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="style">
-        <AccordionTrigger className="text-lg">Interaction Style</AccordionTrigger>
+        <AccordionTrigger className="text-lg">{t.styleTitle}</AccordionTrigger>
         <AccordionContent>
           <Form {...styleForm}>
             <form onSubmit={styleForm.handleSubmit(onStyleSubmit)} className="space-y-6">
@@ -217,12 +315,12 @@ export function SettingsForm({
                 name="style"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Bot Personality</FormLabel>
+                    <FormLabel>{t.styleLabel}</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., friendly and helpful" {...field} />
+                      <Input placeholder={t.stylePlaceholder} {...field} />
                     </FormControl>
                     <FormDescription>
-                      How should the bot behave? (e.g., formal, witty, sarcastic)
+                      {t.styleHint}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -230,7 +328,56 @@ export function SettingsForm({
               />
               <Button type="submit" disabled={isStyleLoading} className="w-full">
                 {isStyleLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Save Style
+                {t.saveStyleButton}
+              </Button>
+            </form>
+          </Form>
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="language">
+        <AccordionTrigger className="text-lg">{t.languageTitle}</AccordionTrigger>
+        <AccordionContent>
+          <Form {...languageForm}>
+            <form onSubmit={languageForm.handleSubmit(onLanguageSubmit)} className="space-y-6">
+              <FormField
+                control={languageForm.control}
+                name="language"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel>{t.languageLabel}</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex flex-col space-y-1"
+                      >
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="en" />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            {t.english}
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="id" />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            {t.indonesian}
+                          </FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormDescription>
+                      {t.languageHint}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit" className="w-full">
+                {t.saveLanguageButton}
               </Button>
             </form>
           </Form>

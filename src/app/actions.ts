@@ -9,6 +9,7 @@ const reasoningSchema = z.object({
   userInput: z.string(),
   characterSettings: z.string(),
   chatHistory: z.string(),
+  language: z.string(),
 });
 
 export const getResponse = async (input: z.infer<typeof reasoningSchema>) => {

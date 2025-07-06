@@ -13,17 +13,35 @@ import {z} from 'genkit';
 
 const ReasoningBasedResponseInputSchema = z.object({
   userInput: z.string().describe('The user input to respond to.'),
-  characterSettings: z.string().describe('The configured character settings, such as personality and interaction style.'),
-  chatHistory: z.string().optional().describe('The chat history to provide context for the response.'),
+  characterSettings: z
+    .string()
+    .describe(
+      'The configured character settings, such as personality and interaction style.'
+    ),
+  chatHistory: z
+    .string()
+    .optional()
+    .describe('The chat history to provide context for the response.'),
+  language: z
+    .string()
+    .describe(
+      'The language for the response. Use "en" for English, "id" for Indonesian.'
+    ),
 });
-export type ReasoningBasedResponseInput = z.infer<typeof ReasoningBasedResponseInputSchema>;
+export type ReasoningBasedResponseInput = z.infer<
+  typeof ReasoningBasedResponseInputSchema
+>;
 
 const ReasoningBasedResponseOutputSchema = z.object({
   response: z.string().describe('The generated response based on reasoning.'),
 });
-export type ReasoningBasedResponseOutput = z.infer<typeof ReasoningBasedResponseOutputSchema>;
+export type ReasoningBasedResponseOutput = z.infer<
+  typeof ReasoningBasedResponseOutputSchema
+>;
 
-export async function reasoningBasedResponse(input: ReasoningBasedResponseInput): Promise<ReasoningBasedResponseOutput> {
+export async function reasoningBasedResponse(
+  input: ReasoningBasedResponseInput
+): Promise<ReasoningBasedResponseOutput> {
   return reasoningBasedResponseFlow(input);
 }
 
@@ -38,6 +56,8 @@ const prompt = ai.definePrompt({
   Based on the above character settings and chat history, respond to the following user input with reasoning:
 
   {{{userInput}}}
+
+  IMPORTANT: You MUST write your response in the language specified by the following language code: {{{language}}}. For example, 'en' is English, and 'id' is Indonesian.
   `,
 });
 
