@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Menu, Send, Loader2, Trash2 } from "lucide-react";
+import { Menu, Send, Loader2 } from "lucide-react";
 import { SettingsForm } from "@/components/settings-form";
 import { Separator } from "@/components/ui/separator";
 import { ChatMessage } from "@/components/chat-message";
@@ -208,6 +208,7 @@ export default function Home() {
               currentBotName={botName}
               setLanguage={setLanguage}
               currentLanguage={language}
+              handleClearChat={handleClearChat}
             />
           </SheetContent>
         </Sheet>
@@ -250,15 +251,6 @@ export default function Home() {
               <Send className="h-5 w-5" />
             </Button>
           </form>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={handleClearChat}
-            className="rounded-full w-12 h-12"
-            aria-label={t.clearChat}
-          >
-            <Trash2 className="h-5 w-5" />
-          </Button>
         </div>
       </footer>
     </div>

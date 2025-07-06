@@ -25,7 +25,19 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Loader2, Wand2 } from "lucide-react";
+import { Loader2, Wand2, Trash2 } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 
 const avatarFormSchema = z.object({
   description: z.string().min(10, {
@@ -60,6 +72,7 @@ interface SettingsFormProps {
   currentBotName: string;
   setLanguage: (lang: 'en' | 'id') => void;
   currentLanguage: 'en' | 'id';
+  handleClearChat: () => void;
 }
 
 const translations = {
@@ -96,6 +109,12 @@ const translations = {
       languageUpdatedToastDesc: 'The bot will now respond in {language}.',
       english: 'English',
       indonesian: 'Indonesian',
+      dangerZoneTitle: "Danger Zone",
+      clearChatButtonLabel: "Clear chat history",
+      clearChatDialogTitle: "Are you absolutely sure?",
+      clearChatDialogDescription: "This action cannot be undone. This will permanently delete your current conversation history.",
+      dialogCancel: "Cancel",
+      dialogConfirm: "Confirm & Clear",
     },
     id: {
       avatarTitle: 'Pembuatan Avatar',
@@ -130,6 +149,12 @@ const translations = {
       languageUpdatedToastDesc: 'Bot sekarang akan merespons dalam {language}.',
       english: 'English',
       indonesian: 'Bahasa Indonesia',
+      dangerZoneTitle: "Zona Berbahaya",
+      clearChatButtonLabel: "Bersihkan riwayat obrolan",
+      clearChatDialogTitle: "Apakah Anda benar-benar yakin?",
+      clearChatDialogDescription: "Tindakan ini tidak dapat dibatalkan. Ini akan menghapus riwayat percakapan Anda saat ini secara permanen.",
+      dialogCancel: "Batal",
+      dialogConfirm: "Konfirmasi & Bersihkan",
     }
   };
 
@@ -142,6 +167,7 @@ export function SettingsForm({
   currentBotName,
   setLanguage,
   currentLanguage,
+  handleClearChat,
 }: SettingsFormProps) {
   const { toast } = useToast();
   const [isAvatarLoading, setIsAvatarLoading] = useState(false);
@@ -395,6 +421,36 @@ export function SettingsForm({
               </Button>
             </form>
           </Form>
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="danger">
+        <AccordionTrigger className="text-lg text-destructive/90 hover:text-destructive">{t.dangerZoneTitle}</AccordionTrigger>
+        <AccordionContent>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive" className="w-full">
+                <Trash2 className="mr-2 h-4 w-4" />
+                {t.clearChatButtonLabel}
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>{t.clearChatDialogTitle}</AlertDialogTitle>
+                <AlertDialogDescription>
+                  {t.clearChatDialogDescription}
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>{t.dialogCancel}</AlertDialogCancel>
+                <AlertDialogAction onClick={() => {
+                    handleClearChat();
+                    closeSheet();
+                  }}>
+                  {t.dialogConfirm}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </AccordionContent>
       </AccordionItem>
     </Accordion>
