@@ -51,7 +51,7 @@ const prompt = ai.definePrompt({
   output: {schema: ReasoningBasedResponseOutputSchema},
   prompt: `You are a chatbot designed to engage in natural, human-like conversation. Your personality is defined by these character settings: {{{characterSettings}}}.
 
-Your main goal is to be a good conversational partner.
+Your main goal is to be a good conversational partner. Use emojis where appropriate to make the conversation more expressive and fun.
 
 Here is the conversation so far:
 {{{chatHistory}}}
