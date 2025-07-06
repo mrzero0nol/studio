@@ -20,9 +20,11 @@ export type GenerateAvatarInput = z.infer<typeof GenerateAvatarInputSchema>;
 const GenerateAvatarOutputSchema = z.object({
   avatarDataUri: z
     .string()
+    .optional()
     .describe(
-      'The avatar image as a data URI that must include a MIME type and use Base64 encoding. Expected format: \'data:<mimetype>;base64,<encoded_data>\'.' 
+      "The avatar image as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
     ),
+  error: z.string().optional().describe('An error message if generation failed.'),
 });
 
 export type GenerateAvatarOutput = z.infer<typeof GenerateAvatarOutputSchema>;
@@ -35,7 +37,7 @@ const generateAvatarPrompt = ai.definePrompt({
   name: 'generateAvatarPrompt',
   input: {schema: GenerateAvatarInputSchema},
   output: {schema: GenerateAvatarOutputSchema},
-  prompt: `Generate an avatar image based on the following description: {{{description}}}.  Return the image as a data URI.`, 
+  prompt: `Generate an avatar image based on the following description: {{{description}}}.  Return the image as a data URI.`,
   config: {
     safetySettings: [
       {
@@ -95,7 +97,7 @@ const generateAvatarFlow = ai.defineFlow(
     });
 
     if (!media?.url) {
-      throw new Error("Image generation failed. It's possible the prompt was rejected for safety reasons. Please try a different description.");
+      return { error: "Image generation failed. It's possible the prompt was rejected for safety reasons. Please try a different description." };
     }
 
     return {avatarDataUri: media.url};

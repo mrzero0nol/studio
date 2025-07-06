@@ -181,18 +181,32 @@ export function SettingsForm({
     setIsAvatarLoading(true);
     try {
       const result = await createAvatar({ description: values.description });
-      setAvatarUrl(result.avatarDataUri);
-      toast({
-        title: t.avatarGeneratedToast,
-        description: t.avatarGeneratedToastDesc,
-      });
-      closeSheet();
+      if (result.error) {
+        toast({
+          variant: "destructive",
+          title: t.avatarErrorToast,
+          description: result.error,
+        });
+      } else if (result.avatarDataUri) {
+        setAvatarUrl(result.avatarDataUri);
+        toast({
+          title: t.avatarGeneratedToast,
+          description: t.avatarGeneratedToastDesc,
+        });
+        closeSheet();
+      } else {
+        toast({
+          variant: "destructive",
+          title: t.avatarErrorToast,
+          description: t.avatarErrorToastDesc,
+        });
+      }
     } catch (error) {
       console.error("Avatar generation failed:", error);
       toast({
         variant: "destructive",
         title: t.avatarErrorToast,
-        description: t.avatarErrorToastDesc,
+        description: error instanceof Error ? error.message : t.avatarErrorToastDesc,
       });
     } finally {
       setIsAvatarLoading(false);
