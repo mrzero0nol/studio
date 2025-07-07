@@ -442,6 +442,52 @@ export function SettingsForm({
       </TabsContent>
       <TabsContent value="general">
         <div className="space-y-4 pt-4">
+          {/* Clear Chat Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium text-destructive/90">{t.dangerZoneTitle}</h3>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive" className="w-full">
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  {t.clearChatButtonLabel}
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>{t.clearChatDialogTitle}</AlertDialogTitle>
+                  <p className="text-sm text-muted-foreground">
+                    {t.clearChatDialogDescription}
+                  </p>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t.dialogCancel}</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => {
+                      handleClearChat();
+                      closeSheet();
+                    }}>
+                    {t.dialogConfirm}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
+          
+          {/* Story Mode Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium">{t.storyModeTitle}</h3>
+            <div className="flex flex-row items-center justify-between rounded-lg border p-4">
+                <div className="space-y-0.5">
+                  <Label htmlFor="story-mode-switch" className="text-base">{t.storyModeLabel}</Label>
+                  <p className="text-sm text-muted-foreground">{t.storyModeHint}</p>
+                </div>
+                <Switch
+                  id="story-mode-switch"
+                  checked={currentStoryMode}
+                  onCheckedChange={setStoryMode}
+                />
+              </div>
+          </div>
+
           {/* Language Section */}
           <div className="space-y-4">
             <h3 className="text-lg font-medium">{t.languageTitle}</h3>
@@ -554,52 +600,6 @@ export function SettingsForm({
                 </Button>
               </form>
             </Form>
-          </div>
-
-          {/* Story Mode Section */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">{t.storyModeTitle}</h3>
-            <div className="flex flex-row items-center justify-between rounded-lg border p-4">
-                <div className="space-y-0.5">
-                  <Label htmlFor="story-mode-switch" className="text-base">{t.storyModeLabel}</Label>
-                  <p className="text-sm text-muted-foreground">{t.storyModeHint}</p>
-                </div>
-                <Switch
-                  id="story-mode-switch"
-                  checked={currentStoryMode}
-                  onCheckedChange={setStoryMode}
-                />
-              </div>
-          </div>
-          
-          {/* Clear Chat Section */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium text-destructive/90">{t.dangerZoneTitle}</h3>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button variant="destructive" className="w-full">
-                  <Trash2 className="mr-2 h-4 w-4" />
-                  {t.clearChatButtonLabel}
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>{t.clearChatDialogTitle}</AlertDialogTitle>
-                  <p className="text-sm text-muted-foreground">
-                    {t.clearChatDialogDescription}
-                  </p>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>{t.dialogCancel}</AlertDialogCancel>
-                  <AlertDialogAction onClick={() => {
-                      handleClearChat();
-                      closeSheet();
-                    }}>
-                    {t.dialogConfirm}
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
           </div>
         </div>
       </TabsContent>
