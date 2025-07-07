@@ -111,7 +111,9 @@ export default function Home() {
     }
 
     const savedDarkMode = localStorage.getItem("darkMode");
-    if (savedDarkMode) {
+    if (savedDarkMode === null) {
+      setDarkMode(true);
+    } else {
       setDarkMode(JSON.parse(savedDarkMode));
     }
 

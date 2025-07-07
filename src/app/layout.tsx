@@ -20,7 +20,7 @@ export default function RootLayout({
           document.documentElement.classList.add('theme-' + theme);
         }
         const darkMode = localStorage.getItem('darkMode');
-        if (darkMode === 'true') {
+        if (darkMode === null || darkMode === 'true') {
           document.documentElement.classList.add('dark');
         }
       } catch (e) {
