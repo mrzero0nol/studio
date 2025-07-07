@@ -10,14 +10,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -215,23 +211,17 @@ export default function Home() {
     <div className="flex h-full flex-col bg-background font-body">
       <header className="flex items-center justify-between p-3 border-b shadow-sm bg-card/50 backdrop-blur-sm sticky top-0 z-10">
         <div className="flex items-center gap-3">
-          <AlertDialog open={isAvatarPreviewOpen} onOpenChange={setIsAvatarPreviewOpen}>
-            <AlertDialogTrigger asChild>
+          <Dialog open={isAvatarPreviewOpen} onOpenChange={setIsAvatarPreviewOpen}>
+            <DialogTrigger asChild>
               <Avatar className="w-12 h-12 border-2 border-primary/50 cursor-pointer hover:opacity-80 transition-opacity">
                 <AvatarImage src={avatarUrl} alt="Custom Chat Character Avatar" data-ai-hint="robot avatar" />
                 <AvatarFallback>{botInitials}</AvatarFallback>
               </Avatar>
-            </AlertDialogTrigger>
-            <AlertDialogContent className="p-2 bg-card/80 backdrop-blur-sm border-primary/50 max-w-lg">
-                <AlertDialogHeader>
-                  <AlertDialogTitle className="sr-only">{t.avatarPreviewTitle}</AlertDialogTitle>
-                </AlertDialogHeader>
+            </DialogTrigger>
+            <DialogContent className="p-0 bg-transparent border-none shadow-none max-w-lg">
                 <img src={avatarUrl} alt="Enlarged Avatar" className="rounded-md w-full h-auto object-contain" />
-                <AlertDialogFooter className="sm:justify-center mt-2">
-                    <AlertDialogCancel>{t.dialogCancel}</AlertDialogCancel>
-                </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+            </DialogContent>
+          </Dialog>
           <div>
             <h1 className="text-xl font-bold font-headline text-primary">{botName}</h1>
             <p className="text-sm text-muted-foreground flex items-center gap-1.5">
