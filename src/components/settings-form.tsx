@@ -87,7 +87,6 @@ interface SettingsFormProps {
   setAvatarUrl: (url: string) => void;
   setInteractionStyle: (style: string) => void;
   currentStyle: string;
-  closeSheet: () => void;
   setCharacterName: (name: string) => void;
   currentCharacterName: string;
   setLanguage: (lang: 'en' | 'id') => void;
@@ -291,7 +290,6 @@ export function SettingsForm({
   setAvatarUrl,
   setInteractionStyle,
   currentStyle,
-  closeSheet,
   setCharacterName,
   currentCharacterName,
   setLanguage,
@@ -444,7 +442,6 @@ export function SettingsForm({
       title: t.languageUpdatedToast,
       description: t.languageUpdatedToastDesc.replace('{language}', values.language === 'en' ? t.english : t.indonesian),
     });
-    closeSheet();
   }
 
   function onThemeSubmit(values: z.infer<typeof themeFormSchema>) {
@@ -453,7 +450,6 @@ export function SettingsForm({
       title: t.themeUpdatedToast,
       description: t.themeUpdatedToastDesc,
     });
-    closeSheet();
   }
 
   function onUserNameSubmit(values: z.infer<typeof userNameFormSchema>) {
@@ -649,23 +645,22 @@ export function SettingsForm({
                       <FormLabel>{t.userGenderLabel}</FormLabel>
                       <FormControl>
                         <RadioGroup
-                          ref={field.ref}
                           onValueChange={field.onChange}
                           value={field.value}
                           className="flex flex-col space-y-1"
                         >
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl><RadioGroupItem value="male" /></FormControl>
-                            <FormLabel className="font-normal">{t.male}</FormLabel>
-                          </FormItem>
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl><RadioGroupItem value="female" /></FormControl>
-                            <FormLabel className="font-normal">{t.female}</FormLabel>
-                          </FormItem>
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl><RadioGroupItem value="not_specified" /></FormControl>
-                            <FormLabel className="font-normal">{t.notSpecified}</FormLabel>
-                          </FormItem>
+                          <div className="flex items-center space-x-3 space-y-0">
+                            <RadioGroupItem value="male" id="gender-male" />
+                            <Label htmlFor="gender-male" className="font-normal">{t.male}</Label>
+                          </div>
+                          <div className="flex items-center space-x-3 space-y-0">
+                            <RadioGroupItem value="female" id="gender-female" />
+                            <Label htmlFor="gender-female" className="font-normal">{t.female}</Label>
+                          </div>
+                          <div className="flex items-center space-x-3 space-y-0">
+                            <RadioGroupItem value="not_specified" id="gender-not_specified" />
+                            <Label htmlFor="gender-not_specified" className="font-normal">{t.notSpecified}</Label>
+                          </div>
                         </RadioGroup>
                       </FormControl>
                       <p className="text-sm text-muted-foreground">{t.userGenderHint}</p>
@@ -726,7 +721,6 @@ export function SettingsForm({
                   <AlertDialogCancel>{t.dialogCancel}</AlertDialogCancel>
                   <AlertDialogAction onClick={() => {
                       handleClearChat();
-                      closeSheet();
                     }}>
                     {t.dialogConfirm}
                   </AlertDialogAction>
@@ -780,27 +774,18 @@ export function SettingsForm({
                       <FormLabel>{t.languageLabel}</FormLabel>
                       <FormControl>
                         <RadioGroup
-                          ref={field.ref}
                           onValueChange={field.onChange}
                           value={field.value}
                           className="flex flex-col space-y-1"
                         >
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="en" />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              {t.english}
-                            </FormLabel>
-                          </FormItem>
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="id" />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              {t.indonesian}
-                            </FormLabel>
-                          </FormItem>
+                          <div className="flex items-center space-x-3 space-y-0">
+                            <RadioGroupItem value="en" id="lang-en" />
+                            <Label htmlFor="lang-en" className="font-normal">{t.english}</Label>
+                          </div>
+                          <div className="flex items-center space-x-3 space-y-0">
+                            <RadioGroupItem value="id" id="lang-id" />
+                            <Label htmlFor="lang-id" className="font-normal">{t.indonesian}</Label>
+                          </div>
                         </RadioGroup>
                       </FormControl>
                       <p className="text-sm text-muted-foreground">
@@ -830,43 +815,26 @@ export function SettingsForm({
                       <FormLabel>{t.themeLabel}</FormLabel>
                       <FormControl>
                         <RadioGroup
-                          ref={field.ref}
                           onValueChange={field.onChange}
                           value={field.value}
                           className="flex flex-col space-y-1"
                         >
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="default" />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              {t.themeDefault}
-                            </FormLabel>
-                          </FormItem>
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="sunset" />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              {t.themeSunset}
-                            </FormLabel>
-                          </FormItem>
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="ocean" />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              {t.themeOcean}
-                            </FormLabel>
-                          </FormItem>
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="forest" />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              {t.themeForest}
-                            </FormLabel>
-                          </FormItem>
+                          <div className="flex items-center space-x-3 space-y-0">
+                            <RadioGroupItem value="default" id="theme-default" />
+                            <Label htmlFor="theme-default" className="font-normal">{t.themeDefault}</Label>
+                          </div>
+                          <div className="flex items-center space-x-3 space-y-0">
+                            <RadioGroupItem value="sunset" id="theme-sunset" />
+                            <Label htmlFor="theme-sunset" className="font-normal">{t.themeSunset}</Label>
+                          </div>
+                          <div className="flex items-center space-x-3 space-y-0">
+                            <RadioGroupItem value="ocean" id="theme-ocean" />
+                            <Label htmlFor="theme-ocean" className="font-normal">{t.themeOcean}</Label>
+                          </div>
+                          <div className="flex items-center space-x-3 space-y-0">
+                            <RadioGroupItem value="forest" id="theme-forest" />
+                            <Label htmlFor="theme-forest" className="font-normal">{t.themeForest}</Label>
+                          </div>
                         </RadioGroup>
                       </FormControl>
                       <p className="text-sm text-muted-foreground">
