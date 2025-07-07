@@ -248,11 +248,14 @@ export default function Home() {
               </div>
             </ScrollArea>
              <div className="p-4 text-center text-xs text-muted-foreground">
-              <span>Custom Chat Character</span>
-              <span className="mx-2">&bull;</span>
-              <span>V1.36.2 (beta)</span>
-              <span className="mx-2">&bull;</span>
-              <span>farqonzero.dev</span>
+                <div>
+                  <span>Custom Chat Character</span>
+                  <span className="mx-1">&bull;</span>
+                  <span>V1.36.2 (beta)</span>
+                </div>
+                <div>
+                  <span>farqonzero.dev</span>
+                </div>
             </div>
           </SheetContent>
         </Sheet>
