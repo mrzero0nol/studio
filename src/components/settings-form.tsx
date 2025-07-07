@@ -82,6 +82,8 @@ interface SettingsFormProps {
   currentTheme: Theme;
   setStoryMode: (enabled: boolean) => void;
   currentStoryMode: boolean;
+  setDarkMode: (enabled: boolean) => void;
+  currentDarkMode: boolean;
 }
 
 const translations = {
@@ -139,6 +141,9 @@ const translations = {
       dialogConfirm: "Confirm & Clear",
       characterSettingsTitle: 'Character',
       generalSettingsTitle: 'General',
+      darkModeTitle: "Dark Mode",
+      darkModeLabel: "Enable Dark Mode",
+      darkModeHint: "Reduces eye strain in low light.",
     },
     id: {
       avatarTitle: 'Pembuatan Avatar',
@@ -194,6 +199,9 @@ const translations = {
       dialogConfirm: "Konfirmasi & Bersihkan",
       characterSettingsTitle: 'Karakter',
       generalSettingsTitle: 'Umum',
+      darkModeTitle: "Mode Gelap",
+      darkModeLabel: "Aktifkan Mode Gelap",
+      darkModeHint: "Mengurangi ketegangan mata dalam cahaya redup.",
     }
   };
 
@@ -211,6 +219,8 @@ export function SettingsForm({
   currentTheme,
   setStoryMode,
   currentStoryMode,
+  setDarkMode,
+  currentDarkMode,
 }: SettingsFormProps) {
   const { toast } = useToast();
   const [isAvatarLoading, setIsAvatarLoading] = useState(false);
@@ -484,6 +494,22 @@ export function SettingsForm({
                   id="story-mode-switch"
                   checked={currentStoryMode}
                   onCheckedChange={setStoryMode}
+                />
+              </div>
+          </div>
+
+          {/* Dark Mode Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium">{t.darkModeTitle}</h3>
+            <div className="flex flex-row items-center justify-between rounded-lg border p-4">
+                <div className="space-y-0.5">
+                  <Label htmlFor="dark-mode-switch" className="text-base">{t.darkModeLabel}</Label>
+                  <p className="text-sm text-muted-foreground">{t.darkModeHint}</p>
+                </div>
+                <Switch
+                  id="dark-mode-switch"
+                  checked={currentDarkMode}
+                  onCheckedChange={setDarkMode}
                 />
               </div>
           </div>

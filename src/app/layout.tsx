@@ -19,6 +19,10 @@ export default function RootLayout({
         if (theme && ['sunset', 'ocean', 'forest'].includes(theme)) {
           document.documentElement.classList.add('theme-' + theme);
         }
+        const darkMode = localStorage.getItem('darkMode');
+        if (darkMode === 'true') {
+          document.documentElement.classList.add('dark');
+        }
       } catch (e) {
         console.error('Failed to set theme from localStorage', e);
       }

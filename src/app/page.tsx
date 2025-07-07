@@ -14,12 +14,13 @@ import {
   DialogContent,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Menu, Send, Loader2 } from "lucide-react";
+import { Menu, Send, Loader2, X } from "lucide-react";
 import { SettingsForm } from "@/components/settings-form";
 import { Separator } from "@/components/ui/separator";
 import { ChatMessage } from "@/components/chat-message";
@@ -68,6 +69,7 @@ export default function Home() {
   const [botName, setBotName] = useState("Custom Chat Character");
   const [messages, setMessages] = useState<Message[]>([]);
   const [storyMode, setStoryMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
 
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -108,6 +110,11 @@ export default function Home() {
       setStoryMode(JSON.parse(savedStoryMode));
     }
 
+    const savedDarkMode = localStorage.getItem("darkMode");
+    if (savedDarkMode) {
+      setDarkMode(JSON.parse(savedDarkMode));
+    }
+
     const savedMessages = localStorage.getItem("chatMessages");
     if (savedMessages) {
       try {
@@ -145,6 +152,15 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem("storyMode", JSON.stringify(storyMode));
   }, [storyMode]);
+
+  useEffect(() => {
+    localStorage.setItem("darkMode", JSON.stringify(darkMode));
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [darkMode]);
 
   useEffect(() => {
     localStorage.setItem("theme", theme);
@@ -222,6 +238,10 @@ export default function Home() {
             <DialogContent className="p-0 bg-transparent border-none shadow-none max-w-lg">
                 <DialogTitle className="sr-only">{t.avatarPreviewTitle}</DialogTitle>
                 <img src={avatarUrl} alt="Enlarged Avatar" className="rounded-md w-full h-auto object-contain" />
+                 <DialogClose className="absolute right-2 top-2 rounded-full p-1.5 bg-black/50 text-white hover:bg-black/70 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
+                    <X className="h-5 w-5" />
+                    <span className="sr-only">Close</span>
+                </DialogClose>
             </DialogContent>
           </Dialog>
           <div>
@@ -263,6 +283,8 @@ export default function Home() {
                   currentTheme={theme}
                   setStoryMode={setStoryMode}
                   currentStoryMode={storyMode}
+                  setDarkMode={setDarkMode}
+                  currentDarkMode={darkMode}
                 />
               </div>
             </ScrollArea>
