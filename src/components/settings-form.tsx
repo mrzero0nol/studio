@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -28,13 +27,18 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import type { Theme } from "@/app/page";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
 
 const avatarFormSchema = z.object({
   description: z.string().min(10, {
@@ -133,6 +137,8 @@ const translations = {
       clearChatDialogDescription: "This action cannot be undone. This will permanently delete your current conversation history.",
       dialogCancel: "Cancel",
       dialogConfirm: "Confirm & Clear",
+      characterSettingsTitle: 'Character',
+      generalSettingsTitle: 'General',
     },
     id: {
       avatarTitle: 'Pembuatan Avatar',
@@ -186,6 +192,8 @@ const translations = {
       clearChatDialogDescription: "Tindakan ini tidak dapat dibatalkan. Ini akan menghapus riwayat percakapan Anda saat ini secara permanen.",
       dialogCancel: "Batal",
       dialogConfirm: "Konfirmasi & Bersihkan",
+      characterSettingsTitle: 'Karakter',
+      generalSettingsTitle: 'Umum',
     }
   };
 
@@ -331,261 +339,270 @@ export function SettingsForm({
   }
 
   return (
-    <div className="space-y-6">
-      {/* Avatar Section */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium">{t.avatarTitle}</h3>
-        <Form {...avatarForm}>
-          <form onSubmit={avatarForm.handleSubmit(onAvatarSubmit)} className="space-y-4">
-            <FormField
-              control={avatarForm.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t.avatarDescriptionLabel}</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder={t.avatarDescriptionPlaceholder}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    {t.avatarDescriptionHint}
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" disabled={isAvatarLoading} className="w-full">
-              {isAvatarLoading ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <Wand2 className="mr-2 h-4 w-4" />
-              )}
-              {t.generateAvatarButton}
-            </Button>
-          </form>
-        </Form>
-      </div>
-
-      {/* Bot Name Section */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium">{t.nameTitle}</h3>
-        <Form {...nameForm}>
-          <form onSubmit={nameForm.handleSubmit(onNameSubmit)} className="space-y-4">
-            <FormField
-              control={nameForm.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t.nameLabel}</FormLabel>
-                  <FormControl>
-                    <Input placeholder={t.namePlaceholder} {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    {t.nameHint}
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" className="w-full">
-              {t.saveNameButton}
-            </Button>
-          </form>
-        </Form>
-      </div>
-
-      {/* Interaction Style Section */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium">{t.styleTitle}</h3>
-        <Form {...styleForm}>
-          <form onSubmit={styleForm.handleSubmit(onStyleSubmit)} className="space-y-4">
-            <FormField
-              control={styleForm.control}
-              name="style"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t.styleLabel}</FormLabel>
-                  <FormControl>
-                    <Input placeholder={t.stylePlaceholder} {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    {t.styleHint}
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" disabled={isStyleLoading} className="w-full">
-              {isStyleLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {t.saveStyleButton}
-            </Button>
-          </form>
-        </Form>
-      </div>
-      
-      {/* Language Section */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium">{t.languageTitle}</h3>
-        <Form {...languageForm}>
-          <form onSubmit={languageForm.handleSubmit(onLanguageSubmit)} className="space-y-4">
-            <FormField
-              control={languageForm.control}
-              name="language"
-              render={({ field }) => (
-                <FormItem className="space-y-3">
-                  <FormLabel>{t.languageLabel}</FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className="flex flex-col space-y-1"
-                    >
-                      <FormItem className="flex items-center space-x-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="en" />
-                        </FormControl>
-                        <FormLabel className="font-normal">
-                          {t.english}
-                        </FormLabel>
-                      </FormItem>
-                      <FormItem className="flex items-center space-x-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="id" />
-                        </FormControl>
-                        <FormLabel className="font-normal">
-                          {t.indonesian}
-                        </FormLabel>
-                      </FormItem>
-                    </RadioGroup>
-                  </FormControl>
-                  <FormDescription>
-                    {t.languageHint}
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" className="w-full">
-              {t.saveLanguageButton}
-            </Button>
-          </form>
-        </Form>
-      </div>
-
-      {/* UI Theme Section */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium">{t.themeTitle}</h3>
-        <Form {...themeForm}>
-          <form onSubmit={themeForm.handleSubmit(onThemeSubmit)} className="space-y-4">
-            <FormField
-              control={themeForm.control}
-              name="theme"
-              render={({ field }) => (
-                <FormItem className="space-y-3">
-                  <FormLabel>{t.themeLabel}</FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className="flex flex-col space-y-1"
-                    >
-                      <FormItem className="flex items-center space-x-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="default" />
-                        </FormControl>
-                        <FormLabel className="font-normal">
-                          {t.themeDefault}
-                        </FormLabel>
-                      </FormItem>
-                      <FormItem className="flex items-center space-x-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="sunset" />
-                        </FormControl>
-                        <FormLabel className="font-normal">
-                          {t.themeSunset}
-                        </FormLabel>
-                      </FormItem>
-                      <FormItem className="flex items-center space-x-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="ocean" />
-                        </FormControl>
-                        <FormLabel className="font-normal">
-                          {t.themeOcean}
-                        </FormLabel>
-                      </FormItem>
-                      <FormItem className="flex items-center space-x-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="forest" />
-                        </FormControl>
-                        <FormLabel className="font-normal">
-                          {t.themeForest}
-                        </FormLabel>
-                      </FormItem>
-                    </RadioGroup>
-                  </FormControl>
-                  <FormDescription>
-                    {t.themeHint}
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" className="w-full">
-              {t.saveThemeButton}
-            </Button>
-          </form>
-        </Form>
-      </div>
-
-      {/* Story Mode Section */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium">{t.storyModeTitle}</h3>
-        <div className="flex flex-row items-center justify-between rounded-lg border p-4">
-            <div className="space-y-0.5">
-              <Label htmlFor="story-mode-switch" className="text-base">{t.storyModeLabel}</Label>
-              <p className="text-sm text-muted-foreground">{t.storyModeHint}</p>
-            </div>
-            <Switch
-              id="story-mode-switch"
-              checked={currentStoryMode}
-              onCheckedChange={setStoryMode}
-            />
+    <Tabs defaultValue="character" className="w-full">
+      <TabsList className="grid w-full grid-cols-2">
+        <TabsTrigger value="character">{t.characterSettingsTitle}</TabsTrigger>
+        <TabsTrigger value="general">{t.generalSettingsTitle}</TabsTrigger>
+      </TabsList>
+      <TabsContent value="character">
+        <div className="space-y-4 pt-4">
+          {/* Avatar Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium">{t.avatarTitle}</h3>
+            <Form {...avatarForm}>
+              <form onSubmit={avatarForm.handleSubmit(onAvatarSubmit)} className="space-y-4">
+                <FormField
+                  control={avatarForm.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t.avatarDescriptionLabel}</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder={t.avatarDescriptionPlaceholder}
+                          {...field}
+                        />
+                      </FormControl>
+                      <p className="text-sm text-muted-foreground">
+                        {t.avatarDescriptionHint}
+                      </p>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" disabled={isAvatarLoading} className="w-full">
+                  {isAvatarLoading ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <Wand2 className="mr-2 h-4 w-4" />
+                  )}
+                  {t.generateAvatarButton}
+                </Button>
+              </form>
+            </Form>
           </div>
-      </div>
-      
-      {/* Clear Chat Section */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium text-destructive/90">{t.dangerZoneTitle}</h3>
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button variant="destructive" className="w-full">
-              <Trash2 className="mr-2 h-4 w-4" />
-              {t.clearChatButtonLabel}
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>{t.clearChatDialogTitle}</AlertDialogTitle>
-              <AlertDialogDescription>
-                {t.clearChatDialogDescription}
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>{t.dialogCancel}</AlertDialogCancel>
-              <AlertDialogAction onClick={() => {
-                  handleClearChat();
-                  closeSheet();
-                }}>
-                {t.dialogConfirm}
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      </div>
-    </div>
+
+          {/* Bot Name Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium">{t.nameTitle}</h3>
+            <Form {...nameForm}>
+              <form onSubmit={nameForm.handleSubmit(onNameSubmit)} className="space-y-4">
+                <FormField
+                  control={nameForm.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t.nameLabel}</FormLabel>
+                      <FormControl>
+                        <Input placeholder={t.namePlaceholder} {...field} />
+                      </FormControl>
+                      <p className="text-sm text-muted-foreground">
+                        {t.nameHint}
+                      </p>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" className="w-full">
+                  {t.saveNameButton}
+                </Button>
+              </form>
+            </Form>
+          </div>
+
+          {/* Interaction Style Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium">{t.styleTitle}</h3>
+            <Form {...styleForm}>
+              <form onSubmit={styleForm.handleSubmit(onStyleSubmit)} className="space-y-4">
+                <FormField
+                  control={styleForm.control}
+                  name="style"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t.styleLabel}</FormLabel>
+                      <FormControl>
+                        <Input placeholder={t.stylePlaceholder} {...field} />
+                      </FormControl>
+                      <p className="text-sm text-muted-foreground">
+                        {t.styleHint}
+                      </p>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" disabled={isStyleLoading} className="w-full">
+                  {isStyleLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {t.saveStyleButton}
+                </Button>
+              </form>
+            </Form>
+          </div>
+        </div>
+      </TabsContent>
+      <TabsContent value="general">
+        <div className="space-y-4 pt-4">
+          {/* Language Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium">{t.languageTitle}</h3>
+            <Form {...languageForm}>
+              <form onSubmit={languageForm.handleSubmit(onLanguageSubmit)} className="space-y-4">
+                <FormField
+                  control={languageForm.control}
+                  name="language"
+                  render={({ field }) => (
+                    <FormItem className="space-y-3">
+                      <FormLabel>{t.languageLabel}</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className="flex flex-col space-y-1"
+                        >
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="en" />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              {t.english}
+                            </FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="id" />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              {t.indonesian}
+                            </FormLabel>
+                          </FormItem>
+                        </RadioGroup>
+                      </FormControl>
+                      <p className="text-sm text-muted-foreground">
+                        {t.languageHint}
+                      </p>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" className="w-full">
+                  {t.saveLanguageButton}
+                </Button>
+              </form>
+            </Form>
+          </div>
+
+          {/* UI Theme Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium">{t.themeTitle}</h3>
+            <Form {...themeForm}>
+              <form onSubmit={themeForm.handleSubmit(onThemeSubmit)} className="space-y-4">
+                <FormField
+                  control={themeForm.control}
+                  name="theme"
+                  render={({ field }) => (
+                    <FormItem className="space-y-3">
+                      <FormLabel>{t.themeLabel}</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className="flex flex-col space-y-1"
+                        >
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="default" />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              {t.themeDefault}
+                            </FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="sunset" />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              {t.themeSunset}
+                            </FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="ocean" />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              {t.themeOcean}
+                            </FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="forest" />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              {t.themeForest}
+                            </FormLabel>
+                          </FormItem>
+                        </RadioGroup>
+                      </FormControl>
+                      <p className="text-sm text-muted-foreground">
+                        {t.themeHint}
+                      </p>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" className="w-full">
+                  {t.saveThemeButton}
+                </Button>
+              </form>
+            </Form>
+          </div>
+
+          {/* Story Mode Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium">{t.storyModeTitle}</h3>
+            <div className="flex flex-row items-center justify-between rounded-lg border p-4">
+                <div className="space-y-0.5">
+                  <Label htmlFor="story-mode-switch" className="text-base">{t.storyModeLabel}</Label>
+                  <p className="text-sm text-muted-foreground">{t.storyModeHint}</p>
+                </div>
+                <Switch
+                  id="story-mode-switch"
+                  checked={currentStoryMode}
+                  onCheckedChange={setStoryMode}
+                />
+              </div>
+          </div>
+          
+          {/* Clear Chat Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium text-destructive/90">{t.dangerZoneTitle}</h3>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive" className="w-full">
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  {t.clearChatButtonLabel}
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>{t.clearChatDialogTitle}</AlertDialogTitle>
+                  <p className="text-sm text-muted-foreground">
+                    {t.clearChatDialogDescription}
+                  </p>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t.dialogCancel}</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => {
+                      handleClearChat();
+                      closeSheet();
+                    }}>
+                    {t.dialogConfirm}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
+        </div>
+      </TabsContent>
+    </Tabs>
   );
 }
-
-    
