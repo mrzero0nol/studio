@@ -649,8 +649,9 @@ export function SettingsForm({
                       <FormLabel>{t.userGenderLabel}</FormLabel>
                       <FormControl>
                         <RadioGroup
+                          ref={field.ref}
                           onValueChange={field.onChange}
-                          defaultValue={field.value}
+                          value={field.value}
                           className="flex flex-col space-y-1"
                         >
                           <FormItem className="flex items-center space-x-3 space-y-0">
@@ -779,8 +780,9 @@ export function SettingsForm({
                       <FormLabel>{t.languageLabel}</FormLabel>
                       <FormControl>
                         <RadioGroup
+                          ref={field.ref}
                           onValueChange={field.onChange}
-                          defaultValue={field.value}
+                          value={field.value}
                           className="flex flex-col space-y-1"
                         >
                           <FormItem className="flex items-center space-x-3 space-y-0">
@@ -828,8 +830,9 @@ export function SettingsForm({
                       <FormLabel>{t.themeLabel}</FormLabel>
                       <FormControl>
                         <RadioGroup
+                          ref={field.ref}
                           onValueChange={field.onChange}
-                          defaultValue={field.value}
+                          value={field.value}
                           className="flex flex-col space-y-1"
                         >
                           <FormItem className="flex items-center space-x-3 space-y-0">
