@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -34,8 +35,6 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import type { Theme } from "@/app/page";
-import { Separator } from "@/components/ui/separator";
-
 
 const avatarFormSchema = z.object({
   description: z.string().min(10, {
@@ -332,12 +331,12 @@ export function SettingsForm({
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Avatar Section */}
       <div className="space-y-4">
         <h3 className="text-lg font-medium">{t.avatarTitle}</h3>
         <Form {...avatarForm}>
-          <form onSubmit={avatarForm.handleSubmit(onAvatarSubmit)} className="space-y-6">
+          <form onSubmit={avatarForm.handleSubmit(onAvatarSubmit)} className="space-y-4">
             <FormField
               control={avatarForm.control}
               name="description"
@@ -369,13 +368,11 @@ export function SettingsForm({
         </Form>
       </div>
 
-      <Separator />
-
       {/* Bot Name Section */}
       <div className="space-y-4">
         <h3 className="text-lg font-medium">{t.nameTitle}</h3>
         <Form {...nameForm}>
-          <form onSubmit={nameForm.handleSubmit(onNameSubmit)} className="space-y-6">
+          <form onSubmit={nameForm.handleSubmit(onNameSubmit)} className="space-y-4">
             <FormField
               control={nameForm.control}
               name="name"
@@ -399,13 +396,11 @@ export function SettingsForm({
         </Form>
       </div>
 
-      <Separator />
-
       {/* Interaction Style Section */}
       <div className="space-y-4">
         <h3 className="text-lg font-medium">{t.styleTitle}</h3>
         <Form {...styleForm}>
-          <form onSubmit={styleForm.handleSubmit(onStyleSubmit)} className="space-y-6">
+          <form onSubmit={styleForm.handleSubmit(onStyleSubmit)} className="space-y-4">
             <FormField
               control={styleForm.control}
               name="style"
@@ -430,13 +425,11 @@ export function SettingsForm({
         </Form>
       </div>
       
-      <Separator />
-
       {/* Language Section */}
       <div className="space-y-4">
         <h3 className="text-lg font-medium">{t.languageTitle}</h3>
         <Form {...languageForm}>
-          <form onSubmit={languageForm.handleSubmit(onLanguageSubmit)} className="space-y-6">
+          <form onSubmit={languageForm.handleSubmit(onLanguageSubmit)} className="space-y-4">
             <FormField
               control={languageForm.control}
               name="language"
@@ -481,13 +474,11 @@ export function SettingsForm({
         </Form>
       </div>
 
-      <Separator />
-
       {/* UI Theme Section */}
       <div className="space-y-4">
         <h3 className="text-lg font-medium">{t.themeTitle}</h3>
         <Form {...themeForm}>
-          <form onSubmit={themeForm.handleSubmit(onThemeSubmit)} className="space-y-6">
+          <form onSubmit={themeForm.handleSubmit(onThemeSubmit)} className="space-y-4">
             <FormField
               control={themeForm.control}
               name="theme"
@@ -548,8 +539,6 @@ export function SettingsForm({
         </Form>
       </div>
 
-      <Separator />
-
       {/* Story Mode Section */}
       <div className="space-y-4">
         <h3 className="text-lg font-medium">{t.storyModeTitle}</h3>
@@ -566,8 +555,6 @@ export function SettingsForm({
           </div>
       </div>
       
-      <Separator />
-
       {/* Clear Chat Section */}
       <div className="space-y-4">
         <h3 className="text-lg font-medium text-destructive/90">{t.dangerZoneTitle}</h3>
@@ -600,3 +587,5 @@ export function SettingsForm({
     </div>
   );
 }
+
+    
