@@ -9,6 +9,13 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -36,6 +43,7 @@ const translations = {
     sendMessage: 'Send message',
     errorMessage: "Sorry, I encountered an error. Please try again.",
     clearChat: "Clear Chat",
+    dialogCancel: "Cancel",
   },
   id: {
     online: 'Daring',
@@ -46,6 +54,7 @@ const translations = {
     sendMessage: 'Kirim pesan',
     errorMessage: "Maaf, terjadi kesalahan. Silakan coba lagi.",
     clearChat: "Bersihkan Obrolan",
+    dialogCancel: "Batal",
   },
 };
 
@@ -62,6 +71,7 @@ export default function Home() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [isAvatarPreviewOpen, setIsAvatarPreviewOpen] = useState(false);
   
   const scrollAreaViewportRef = useRef<HTMLDivElement>(null);
 
@@ -201,10 +211,20 @@ export default function Home() {
     <div className="flex h-full flex-col bg-background font-body">
       <header className="flex items-center justify-between p-3 border-b shadow-sm bg-card/50 backdrop-blur-sm sticky top-0 z-10">
         <div className="flex items-center gap-3">
-          <Avatar className="w-12 h-12 border-2 border-primary/50">
-            <AvatarImage src={avatarUrl} alt="Custom Chat Character Avatar" data-ai-hint="robot avatar" />
-            <AvatarFallback>{botInitials}</AvatarFallback>
-          </Avatar>
+          <AlertDialog open={isAvatarPreviewOpen} onOpenChange={setIsAvatarPreviewOpen}>
+            <AlertDialogTrigger asChild>
+              <Avatar className="w-12 h-12 border-2 border-primary/50 cursor-pointer hover:opacity-80 transition-opacity">
+                <AvatarImage src={avatarUrl} alt="Custom Chat Character Avatar" data-ai-hint="robot avatar" />
+                <AvatarFallback>{botInitials}</AvatarFallback>
+              </Avatar>
+            </AlertDialogTrigger>
+            <AlertDialogContent className="p-2 bg-card/80 backdrop-blur-sm border-primary/50 max-w-lg">
+                <img src={avatarUrl} alt="Enlarged Avatar" className="rounded-md w-full h-auto object-contain" />
+                <AlertDialogFooter className="sm:justify-center mt-2">
+                    <AlertDialogCancel>{t.dialogCancel}</AlertDialogCancel>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
           <div>
             <h1 className="text-xl font-bold font-headline text-primary">{botName}</h1>
             <p className="text-sm text-muted-foreground flex items-center gap-1.5">
@@ -249,8 +269,7 @@ export default function Home() {
             </ScrollArea>
              <div className="p-4 text-center text-xs text-muted-foreground">
                 <div>
-                  <span>Custom Chat Character</span>
-                  <span className="mx-1">&bull;</span>
+                  <span className="mr-1">Custom Chat Character</span>
                   <span>V1.36.2 (beta)</span>
                 </div>
                 <div>
