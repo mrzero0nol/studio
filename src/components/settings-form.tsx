@@ -285,7 +285,6 @@ export function SettingsForm({
           title: t.avatarGeneratedToast,
           description: t.avatarGeneratedToastDesc,
         });
-        closeSheet();
       } else {
         toast({
           variant: "destructive",
@@ -311,7 +310,6 @@ export function SettingsForm({
       title: t.nameUpdatedToast,
       description: t.nameUpdatedToastDesc.replace('{name}', values.name),
     });
-    closeSheet();
   }
 
   async function onStyleSubmit(values: z.infer<typeof styleFormSchema>) {
@@ -323,7 +321,6 @@ export function SettingsForm({
         title: t.styleUpdatedToast,
         description: t.styleUpdatedToastDesc.replace('{style}', result.configuredStyle),
       });
-      closeSheet();
     } catch (error) {
       console.error("Style configuration failed:", error);
       toast({
