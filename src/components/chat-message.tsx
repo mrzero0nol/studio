@@ -9,14 +9,19 @@ interface ChatMessageProps {
   botInitials: string;
 }
 
-function parseContent(content: string) {
+function parseContent(content: string, isBot: boolean) {
   const parts = content.split(/(\*.*?\*)/g);
   return (
     <>
       {parts.map((part, index) => {
         if (part.startsWith("*") && part.endsWith("*")) {
           return (
-            <em key={index} className="italic text-muted-foreground">
+            <em
+              key={index}
+              className={`italic ${
+                isBot ? "text-muted-foreground" : "text-black/80"
+              }`}
+            >
               {part.slice(1, -1)}
             </em>
           );
@@ -51,7 +56,7 @@ export function ChatMessage({ message, avatarUrl, botInitials }: ChatMessageProp
         }`}
       >
         <p className="text-sm leading-relaxed whitespace-pre-wrap">
-          {parseContent(message.content)}
+          {parseContent(message.content, isBot)}
         </p>
       </div>
     </div>
