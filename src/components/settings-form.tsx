@@ -18,12 +18,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Loader2, Wand2, Trash2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
@@ -40,6 +34,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import type { Theme } from "@/app/page";
+import { Separator } from "@/components/ui/separator";
 
 
 const avatarFormSchema = z.object({
@@ -337,262 +332,271 @@ export function SettingsForm({
   }
 
   return (
-    <Accordion type="single" collapsible className="w-full" defaultValue="avatar">
-      <AccordionItem value="avatar">
-        <AccordionTrigger className="text-lg">{t.avatarTitle}</AccordionTrigger>
-        <AccordionContent>
-          <Form {...avatarForm}>
-            <form onSubmit={avatarForm.handleSubmit(onAvatarSubmit)} className="space-y-6">
-              <FormField
-                control={avatarForm.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t.avatarDescriptionLabel}</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder={t.avatarDescriptionPlaceholder}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      {t.avatarDescriptionHint}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" disabled={isAvatarLoading} className="w-full">
-                {isAvatarLoading ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <Wand2 className="mr-2 h-4 w-4" />
-                )}
-                {t.generateAvatarButton}
-              </Button>
-            </form>
-          </Form>
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="name">
-        <AccordionTrigger className="text-lg">{t.nameTitle}</AccordionTrigger>
-        <AccordionContent>
-          <Form {...nameForm}>
-            <form onSubmit={nameForm.handleSubmit(onNameSubmit)} className="space-y-6">
-              <FormField
-                control={nameForm.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t.nameLabel}</FormLabel>
-                    <FormControl>
-                      <Input placeholder={t.namePlaceholder} {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      {t.nameHint}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" className="w-full">
-                {t.saveNameButton}
-              </Button>
-            </form>
-          </Form>
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="style">
-        <AccordionTrigger className="text-lg">{t.styleTitle}</AccordionTrigger>
-        <AccordionContent>
-          <Form {...styleForm}>
-            <form onSubmit={styleForm.handleSubmit(onStyleSubmit)} className="space-y-6">
-              <FormField
-                control={styleForm.control}
-                name="style"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t.styleLabel}</FormLabel>
-                    <FormControl>
-                      <Input placeholder={t.stylePlaceholder} {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      {t.styleHint}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" disabled={isStyleLoading} className="w-full">
-                {isStyleLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {t.saveStyleButton}
-              </Button>
-            </form>
-          </Form>
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="language">
-        <AccordionTrigger className="text-lg">{t.languageTitle}</AccordionTrigger>
-        <AccordionContent>
-          <Form {...languageForm}>
-            <form onSubmit={languageForm.handleSubmit(onLanguageSubmit)} className="space-y-6">
-              <FormField
-                control={languageForm.control}
-                name="language"
-                render={({ field }) => (
-                  <FormItem className="space-y-3">
-                    <FormLabel>{t.languageLabel}</FormLabel>
-                    <FormControl>
-                      <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        className="flex flex-col space-y-1"
-                      >
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="en" />
-                          </FormControl>
-                          <FormLabel className="font-normal">
-                            {t.english}
-                          </FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="id" />
-                          </FormControl>
-                          <FormLabel className="font-normal">
-                            {t.indonesian}
-                          </FormLabel>
-                        </FormItem>
-                      </RadioGroup>
-                    </FormControl>
-                    <FormDescription>
-                      {t.languageHint}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" className="w-full">
-                {t.saveLanguageButton}
-              </Button>
-            </form>
-          </Form>
-        </AccordionContent>
-      </AccordionItem>
-       <AccordionItem value="theme">
-        <AccordionTrigger className="text-lg">{t.themeTitle}</AccordionTrigger>
-        <AccordionContent>
-          <Form {...themeForm}>
-            <form onSubmit={themeForm.handleSubmit(onThemeSubmit)} className="space-y-6">
-              <FormField
-                control={themeForm.control}
-                name="theme"
-                render={({ field }) => (
-                  <FormItem className="space-y-3">
-                    <FormLabel>{t.themeLabel}</FormLabel>
-                    <FormControl>
-                      <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        className="flex flex-col space-y-1"
-                      >
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="default" />
-                          </FormControl>
-                          <FormLabel className="font-normal">
-                            {t.themeDefault}
-                          </FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="sunset" />
-                          </FormControl>
-                          <FormLabel className="font-normal">
-                            {t.themeSunset}
-                          </FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="ocean" />
-                          </FormControl>
-                          <FormLabel className="font-normal">
-                            {t.themeOcean}
-                          </FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl>
-                            <RadioGroupItem value="forest" />
-                          </FormControl>
-                          <FormLabel className="font-normal">
-                            {t.themeForest}
-                          </FormLabel>
-                        </FormItem>
-                      </RadioGroup>
-                    </FormControl>
-                    <FormDescription>
-                      {t.themeHint}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" className="w-full">
-                {t.saveThemeButton}
-              </Button>
-            </form>
-          </Form>
-        </AccordionContent>
-      </AccordionItem>
-       <AccordionItem value="story-mode">
-        <AccordionTrigger className="text-lg">{t.storyModeTitle}</AccordionTrigger>
-        <AccordionContent>
-          <div className="space-y-4">
-            <div className="flex flex-row items-center justify-between rounded-lg border p-4">
-              <div className="space-y-0.5">
-                <Label htmlFor="story-mode-switch" className="text-base">{t.storyModeLabel}</Label>
-                <p className="text-sm text-muted-foreground">{t.storyModeHint}</p>
-              </div>
-              <Switch
-                id="story-mode-switch"
-                checked={currentStoryMode}
-                onCheckedChange={setStoryMode}
-              />
+    <div className="space-y-8">
+      {/* Avatar Section */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium">{t.avatarTitle}</h3>
+        <Form {...avatarForm}>
+          <form onSubmit={avatarForm.handleSubmit(onAvatarSubmit)} className="space-y-6">
+            <FormField
+              control={avatarForm.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t.avatarDescriptionLabel}</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder={t.avatarDescriptionPlaceholder}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    {t.avatarDescriptionHint}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" disabled={isAvatarLoading} className="w-full">
+              {isAvatarLoading ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Wand2 className="mr-2 h-4 w-4" />
+              )}
+              {t.generateAvatarButton}
+            </Button>
+          </form>
+        </Form>
+      </div>
+
+      <Separator />
+
+      {/* Bot Name Section */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium">{t.nameTitle}</h3>
+        <Form {...nameForm}>
+          <form onSubmit={nameForm.handleSubmit(onNameSubmit)} className="space-y-6">
+            <FormField
+              control={nameForm.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t.nameLabel}</FormLabel>
+                  <FormControl>
+                    <Input placeholder={t.namePlaceholder} {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    {t.nameHint}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="w-full">
+              {t.saveNameButton}
+            </Button>
+          </form>
+        </Form>
+      </div>
+
+      <Separator />
+
+      {/* Interaction Style Section */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium">{t.styleTitle}</h3>
+        <Form {...styleForm}>
+          <form onSubmit={styleForm.handleSubmit(onStyleSubmit)} className="space-y-6">
+            <FormField
+              control={styleForm.control}
+              name="style"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t.styleLabel}</FormLabel>
+                  <FormControl>
+                    <Input placeholder={t.stylePlaceholder} {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    {t.styleHint}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" disabled={isStyleLoading} className="w-full">
+              {isStyleLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {t.saveStyleButton}
+            </Button>
+          </form>
+        </Form>
+      </div>
+      
+      <Separator />
+
+      {/* Language Section */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium">{t.languageTitle}</h3>
+        <Form {...languageForm}>
+          <form onSubmit={languageForm.handleSubmit(onLanguageSubmit)} className="space-y-6">
+            <FormField
+              control={languageForm.control}
+              name="language"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>{t.languageLabel}</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex flex-col space-y-1"
+                    >
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="en" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          {t.english}
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="id" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          {t.indonesian}
+                        </FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormDescription>
+                    {t.languageHint}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="w-full">
+              {t.saveLanguageButton}
+            </Button>
+          </form>
+        </Form>
+      </div>
+
+      <Separator />
+
+      {/* UI Theme Section */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium">{t.themeTitle}</h3>
+        <Form {...themeForm}>
+          <form onSubmit={themeForm.handleSubmit(onThemeSubmit)} className="space-y-6">
+            <FormField
+              control={themeForm.control}
+              name="theme"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>{t.themeLabel}</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex flex-col space-y-1"
+                    >
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="default" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          {t.themeDefault}
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="sunset" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          {t.themeSunset}
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="ocean" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          {t.themeOcean}
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="forest" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          {t.themeForest}
+                        </FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormDescription>
+                    {t.themeHint}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="w-full">
+              {t.saveThemeButton}
+            </Button>
+          </form>
+        </Form>
+      </div>
+
+      <Separator />
+
+      {/* Story Mode Section */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium">{t.storyModeTitle}</h3>
+        <div className="flex flex-row items-center justify-between rounded-lg border p-4">
+            <div className="space-y-0.5">
+              <Label htmlFor="story-mode-switch" className="text-base">{t.storyModeLabel}</Label>
+              <p className="text-sm text-muted-foreground">{t.storyModeHint}</p>
             </div>
+            <Switch
+              id="story-mode-switch"
+              checked={currentStoryMode}
+              onCheckedChange={setStoryMode}
+            />
           </div>
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="danger">
-        <AccordionTrigger className="text-lg text-destructive/90 hover:text-destructive">{t.dangerZoneTitle}</AccordionTrigger>
-        <AccordionContent>
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="destructive" className="w-full">
-                <Trash2 className="mr-2 h-4 w-4" />
-                {t.clearChatButtonLabel}
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>{t.clearChatDialogTitle}</AlertDialogTitle>
-                <AlertDialogDescription>
-                  {t.clearChatDialogDescription}
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>{t.dialogCancel}</AlertDialogCancel>
-                <AlertDialogAction onClick={() => {
-                    handleClearChat();
-                    closeSheet();
-                  }}>
-                  {t.dialogConfirm}
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+      </div>
+      
+      <Separator />
+
+      {/* Clear Chat Section */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium text-destructive/90">{t.dangerZoneTitle}</h3>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="destructive" className="w-full">
+              <Trash2 className="mr-2 h-4 w-4" />
+              {t.clearChatButtonLabel}
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>{t.clearChatDialogTitle}</AlertDialogTitle>
+              <AlertDialogDescription>
+                {t.clearChatDialogDescription}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>{t.dialogCancel}</AlertDialogCancel>
+              <AlertDialogAction onClick={() => {
+                  handleClearChat();
+                  closeSheet();
+                }}>
+                {t.dialogConfirm}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
+    </div>
   );
 }
