@@ -37,7 +37,7 @@ const generateAvatarPrompt = ai.definePrompt({
   name: 'generateAvatarPrompt',
   input: {schema: GenerateAvatarInputSchema},
   output: {schema: GenerateAvatarOutputSchema},
-  prompt: `Generate an avatar image based on the following description: {{{description}}}.  Return the image as a data URI.`,
+  prompt: `Generate a square avatar image (1:1 aspect ratio) based on the following description: {{{description}}}. Return the image as a data URI.`,
   config: {
     safetySettings: [
       {
@@ -71,7 +71,7 @@ const generateAvatarFlow = ai.defineFlow(
       // IMPORTANT: ONLY the googleai/gemini-2.0-flash-preview-image-generation model is able to generate images. You MUST use exactly this model to generate images.
       model: 'googleai/gemini-2.0-flash-preview-image-generation',
 
-      prompt: input.description,
+      prompt: `Generate a square avatar with a 1:1 aspect ratio, based on the following description: ${input.description}`,
 
       config: {
         responseModalities: ['TEXT', 'IMAGE'], // MUST provide both TEXT and IMAGE, IMAGE only won't work
