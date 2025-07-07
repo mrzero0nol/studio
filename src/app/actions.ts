@@ -8,6 +8,7 @@ import { z } from "zod";
 const reasoningSchema = z.object({
   userInput: z.string(),
   characterSettings: z.string(),
+  userContext: z.string(),
   chatHistory: z.string(),
   language: z.string(),
   storyMode: z.boolean(),

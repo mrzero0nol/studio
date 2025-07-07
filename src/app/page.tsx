@@ -72,6 +72,10 @@ export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
   const [avatarDescription, setAvatarDescription] = useState("A friendly, futuristic robot with a purple and blue color scheme.");
   const [avatarNegativePrompt, setAvatarNegativePrompt] = useState("");
+  const [userName, setUserName] = useState("User");
+  const [userGender, setUserGender] = useState("not_specified");
+  const [userRole, setUserRole] = useState("a user interacting with an AI character.");
+
 
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -140,6 +144,19 @@ export default function Home() {
         setMessages([]);
       }
     }
+
+    const savedUserName = localStorage.getItem("userName");
+    if (savedUserName) {
+      setUserName(savedUserName);
+    }
+    const savedUserGender = localStorage.getItem("userGender");
+    if (savedUserGender) {
+      setUserGender(savedUserGender);
+    }
+    const savedUserRole = localStorage.getItem("userRole");
+    if (savedUserRole) {
+      setUserRole(savedUserRole);
+    }
   }, []);
 
   const t = translations[language];
@@ -198,6 +215,18 @@ export default function Home() {
   }, [messages]);
 
   useEffect(() => {
+    localStorage.setItem("userName", userName);
+  }, [userName]);
+
+  useEffect(() => {
+    localStorage.setItem("userGender", userGender);
+  }, [userGender]);
+
+  useEffect(() => {
+    localStorage.setItem("userRole", userRole);
+  }, [userRole]);
+
+  useEffect(() => {
     if (scrollAreaViewportRef.current) {
       scrollAreaViewportRef.current.scrollTop = scrollAreaViewportRef.current.scrollHeight;
     }
@@ -215,9 +244,11 @@ export default function Home() {
 
     try {
       const chatHistory = messages.map(m => `${m.role}: ${m.content}`).join('\n');
+      const userContext = `The user's name is ${userName}. Their gender is ${userGender}. Your relationship with the user is: ${userRole}.`;
       const result = await getResponse({
         userInput: currentInput,
-        characterSettings: `Your interaction style is: ${interactionStyle}.`,
+        characterSettings: `Your interaction style is: ${interactionStyle}. Your name is ${characterName}.`,
+        userContext: userContext,
         chatHistory,
         language: language,
         storyMode: storyMode,
@@ -313,6 +344,12 @@ export default function Home() {
                   setAvatarDescription={setAvatarDescription}
                   currentAvatarNegativePrompt={avatarNegativePrompt}
                   setAvatarNegativePrompt={setAvatarNegativePrompt}
+                  setUserName={setUserName}
+                  currentUserName={userName}
+                  setUserGender={setUserGender}
+                  currentUserGender={userGender}
+                  setUserRole={setUserRole}
+                  currentUserRole={userRole}
                 />
               </div>
             </ScrollArea>

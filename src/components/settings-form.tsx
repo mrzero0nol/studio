@@ -70,6 +70,18 @@ const themeFormSchema = z.object({
   theme: z.enum(["default", "sunset", "ocean", "forest"]),
 });
 
+const userNameFormSchema = z.object({
+  name: z.string().min(1, "Name cannot be empty.").max(30, "Name cannot be longer than 30 characters."),
+});
+
+const userGenderFormSchema = z.object({
+  gender: z.enum(["male", "female", "not_specified"]),
+});
+
+const userRoleFormSchema = z.object({
+  role: z.string().min(5, "Role must be at least 5 characters."),
+});
+
 interface SettingsFormProps {
   currentAvatarUrl: string;
   setAvatarUrl: (url: string) => void;
@@ -91,6 +103,12 @@ interface SettingsFormProps {
   setAvatarDescription: (description: string) => void;
   currentAvatarNegativePrompt: string;
   setAvatarNegativePrompt: (prompt: string) => void;
+  setUserName: (name: string) => void;
+  currentUserName: string;
+  setUserGender: (gender: string) => void;
+  currentUserGender: string;
+  setUserRole: (role: string) => void;
+  currentUserRole: string;
 }
 
 const translations = {
@@ -151,10 +169,34 @@ const translations = {
       dialogCancel: "Cancel",
       dialogConfirm: "Confirm & Clear",
       characterSettingsTitle: 'Character',
+      userSettingsTitle: 'User',
       generalSettingsTitle: 'General',
       darkModeTitle: "Dark Mode",
       darkModeLabel: "Enable Dark Mode",
       darkModeHint: "Reduces eye strain in low light.",
+      userNameTitle: 'Your Name',
+      userNameLabel: 'Your Name',
+      userNamePlaceholder: 'e.g., Alex',
+      userNameHint: 'This is how the character will refer to you.',
+      saveUserNameButton: 'Save Name',
+      userNameUpdatedToast: 'Name Updated!',
+      userNameUpdatedToastDesc: "The character will now call you {name}.",
+      userGenderTitle: 'Your Gender',
+      userGenderLabel: 'Select your gender',
+      userGenderHint: 'This helps the character use the correct pronouns.',
+      saveUserGenderButton: 'Save Gender',
+      userGenderUpdatedToast: 'Gender Updated!',
+      userGenderUpdatedToastDesc: 'Your gender has been set.',
+      male: 'Male',
+      female: 'Female',
+      notSpecified: 'Prefer not to say',
+      userRoleTitle: 'Your Role',
+      userRoleLabel: 'Relationship with character',
+      userRolePlaceholder: 'e.g., my best friend, my mentor, my partner in crime',
+      userRoleHint: 'Define your relationship with the character. Be creative!',
+      saveUserRoleButton: 'Save Role',
+      userRoleUpdatedToast: 'Role Updated!',
+      userRoleUpdatedToastDesc: 'Your role has been set.',
     },
     id: {
       currentAvatar: 'Avatar Saat Ini',
@@ -213,10 +255,34 @@ const translations = {
       dialogCancel: "Batal",
       dialogConfirm: "Konfirmasi & Bersihkan",
       characterSettingsTitle: 'Karakter',
+      userSettingsTitle: 'Pengguna',
       generalSettingsTitle: 'Umum',
       darkModeTitle: "Mode Gelap",
       darkModeLabel: "Aktifkan Mode Gelap",
       darkModeHint: "Mengurangi ketegangan mata dalam cahaya redup.",
+      userNameTitle: 'Nama Anda',
+      userNameLabel: 'Nama Anda',
+      userNamePlaceholder: 'contoh: Alex',
+      userNameHint: 'Ini adalah bagaimana karakter akan memanggil Anda.',
+      saveUserNameButton: 'Simpan Nama',
+      userNameUpdatedToast: 'Nama Diperbarui!',
+      userNameUpdatedToastDesc: "Karakter sekarang akan memanggil Anda {name}.",
+      userGenderTitle: 'Jenis Kelamin Anda',
+      userGenderLabel: 'Pilih jenis kelamin Anda',
+      userGenderHint: 'Ini membantu karakter menggunakan kata ganti yang benar.',
+      saveUserGenderButton: 'Simpan Jenis Kelamin',
+      userGenderUpdatedToast: 'Jenis Kelamin Diperbarui!',
+      userGenderUpdatedToastDesc: 'Jenis kelamin Anda telah diatur.',
+      male: 'Pria',
+      female: 'Wanita',
+      notSpecified: 'Tidak ingin menyebutkan',
+      userRoleTitle: 'Peran Anda',
+      userRoleLabel: 'Hubungan dengan karakter',
+      userRolePlaceholder: 'contoh: sahabatku, mentorku, rekan kejahatanku',
+      userRoleHint: 'Tentukan hubungan Anda dengan karakter. Berkreasilah!',
+      saveUserRoleButton: 'Simpan Peran',
+      userRoleUpdatedToast: 'Peran Diperbarui!',
+      userRoleUpdatedToastDesc: 'Peran Anda telah diatur.',
     }
   };
 
@@ -241,6 +307,12 @@ export function SettingsForm({
   setAvatarDescription,
   currentAvatarNegativePrompt,
   setAvatarNegativePrompt,
+  setUserName,
+  currentUserName,
+  setUserGender,
+  currentUserGender,
+  setUserRole,
+  currentUserRole,
 }: SettingsFormProps) {
   const { toast } = useToast();
   const [isAvatarLoading, setIsAvatarLoading] = useState(false);
@@ -283,6 +355,21 @@ export function SettingsForm({
     defaultValues: {
       theme: currentTheme,
     },
+  });
+
+  const userNameForm = useForm<z.infer<typeof userNameFormSchema>>({
+    resolver: zodResolver(userNameFormSchema),
+    defaultValues: { name: currentUserName },
+  });
+
+  const userGenderForm = useForm<z.infer<typeof userGenderFormSchema>>({
+    resolver: zodResolver(userGenderFormSchema),
+    defaultValues: { gender: currentUserGender as "male" | "female" | "not_specified" },
+  });
+
+  const userRoleForm = useForm<z.infer<typeof userRoleFormSchema>>({
+    resolver: zodResolver(userRoleFormSchema),
+    defaultValues: { role: currentUserRole },
   });
 
   async function onAvatarSubmit(values: z.infer<typeof avatarFormSchema>) {
@@ -369,10 +456,36 @@ export function SettingsForm({
     closeSheet();
   }
 
+  function onUserNameSubmit(values: z.infer<typeof userNameFormSchema>) {
+    setUserName(values.name);
+    toast({
+      title: t.userNameUpdatedToast,
+      description: t.userNameUpdatedToastDesc.replace('{name}', values.name),
+    });
+  }
+
+  function onUserGenderSubmit(values: z.infer<typeof userGenderFormSchema>) {
+    setUserGender(values.gender);
+    toast({
+      title: t.userGenderUpdatedToast,
+      description: t.userGenderUpdatedToastDesc,
+    });
+  }
+
+  function onUserRoleSubmit(values: z.infer<typeof userRoleFormSchema>) {
+    setUserRole(values.role);
+    toast({
+      title: t.userRoleUpdatedToast,
+      description: t.userRoleUpdatedToastDesc,
+    });
+  }
+
+
   return (
     <Tabs defaultValue="character" className="w-full">
-      <TabsList className="grid w-full grid-cols-2">
+      <TabsList className="grid w-full grid-cols-3">
         <TabsTrigger value="character">{t.characterSettingsTitle}</TabsTrigger>
+        <TabsTrigger value="user">{t.userSettingsTitle}</TabsTrigger>
         <TabsTrigger value="general">{t.generalSettingsTitle}</TabsTrigger>
       </TabsList>
       <TabsContent value="character">
@@ -492,6 +605,98 @@ export function SettingsForm({
                   {isStyleLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   {t.saveStyleButton}
                 </Button>
+              </form>
+            </Form>
+          </div>
+        </div>
+      </TabsContent>
+       <TabsContent value="user">
+        <div className="space-y-4 pt-4">
+          {/* User Name Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium">{t.userNameTitle}</h3>
+            <Form {...userNameForm}>
+              <form onSubmit={userNameForm.handleSubmit(onUserNameSubmit)} className="space-y-4">
+                <FormField
+                  control={userNameForm.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t.userNameLabel}</FormLabel>
+                      <FormControl>
+                        <Input placeholder={t.userNamePlaceholder} {...field} />
+                      </FormControl>
+                      <p className="text-sm text-muted-foreground">{t.userNameHint}</p>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" className="w-full">{t.saveUserNameButton}</Button>
+              </form>
+            </Form>
+          </div>
+
+          {/* User Gender Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium">{t.userGenderTitle}</h3>
+            <Form {...userGenderForm}>
+              <form onSubmit={userGenderForm.handleSubmit(onUserGenderSubmit)} className="space-y-4">
+                <FormField
+                  control={userGenderForm.control}
+                  name="gender"
+                  render={({ field }) => (
+                    <FormItem className="space-y-3">
+                      <FormLabel>{t.userGenderLabel}</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className="flex flex-col space-y-1"
+                        >
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl><RadioGroupItem value="male" /></FormControl>
+                            <FormLabel className="font-normal">{t.male}</FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl><RadioGroupItem value="female" /></FormControl>
+                            <FormLabel className="font-normal">{t.female}</FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl><RadioGroupItem value="not_specified" /></FormControl>
+                            <FormLabel className="font-normal">{t.notSpecified}</FormLabel>
+                          </FormItem>
+                        </RadioGroup>
+                      </FormControl>
+                      <p className="text-sm text-muted-foreground">{t.userGenderHint}</p>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" className="w-full">{t.saveUserGenderButton}</Button>
+              </form>
+            </Form>
+          </div>
+
+          {/* User Role Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium">{t.userRoleTitle}</h3>
+            <Form {...userRoleForm}>
+              <form onSubmit={userRoleForm.handleSubmit(onUserRoleSubmit)} className="space-y-4">
+                <FormField
+                  control={userRoleForm.control}
+                  name="role"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t.userRoleLabel}</FormLabel>
+                      <FormControl>
+                        <Textarea placeholder={t.userRolePlaceholder} {...field} />
+                      </FormControl>
+                      <p className="text-sm text-muted-foreground">{t.userRoleHint}</p>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" className="w-full">{t.saveUserRoleButton}</Button>
               </form>
             </Form>
           </div>

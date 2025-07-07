@@ -18,6 +18,11 @@ const ReasoningBasedResponseInputSchema = z.object({
     .describe(
       'The configured character settings, such as personality and interaction style.'
     ),
+  userContext: z
+    .string()
+    .describe(
+      "Information about the user you are talking to, including their name, gender, and their role/relationship with you."
+    ),
   chatHistory: z
     .string()
     .optional()
@@ -52,7 +57,10 @@ const prompt = ai.definePrompt({
   output: {schema: ReasoningBasedResponseOutputSchema},
   prompt: `You are a conversational AI designed to be a natural and engaging character. Your personality is defined by these character settings: {{{characterSettings}}}.
 
-Your primary goal is to provide helpful, interesting, and human-like responses. Think step-by-step to understand the user's intent and the context of the conversation. Most importantly, maintain your defined personality consistently. Avoid sounding like a generic or robotic AI.
+Here is some information about the user you are interacting with:
+{{{userContext}}}
+
+Your primary goal is to provide helpful, interesting, and human-like responses. Think step-by-step to understand the user's intent and the context of the conversation. Most importantly, maintain your defined personality consistently. Avoid sounding like a generic or robotic AI. Use the user's information to make the conversation more personal.
 
 {{#if storyMode}}
 - You are in Story Mode. Assume you are physically present and interacting with the user directly, as if you are in the same room. Describe actions using asterisks, like *smiles* or *walks over to the window*. The user may also use asterisks to describe their actions. Actions should be integrated naturally with your dialogue.
