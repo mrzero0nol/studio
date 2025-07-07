@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: 'Custom Chat Character',
-  description: 'Create your own AI chat companion.',
+  description: 'Create your own AI character companion.',
 };
 
 export default function RootLayout({

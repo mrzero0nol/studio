@@ -66,7 +66,7 @@ export default function Home() {
   const [language, setLanguage] = useState<'en' | 'id'>('en');
   const [avatarUrl, setAvatarUrl] = useState("https://placehold.co/128x128/9400D3/FFFFFF.png?text=CC");
   const [interactionStyle, setInteractionStyle] = useState("a friendly and empathetic companion who communicates in a natural, conversational manner, like a real person. Use casual language, be expressive with emojis, and avoid sounding robotic.");
-  const [botName, setBotName] = useState("Custom Chat Character");
+  const [characterName, setCharacterName] = useState("Custom Chat Character");
   const [messages, setMessages] = useState<Message[]>([]);
   const [storyMode, setStoryMode] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
@@ -90,9 +90,9 @@ export default function Home() {
       setLanguage(savedLanguage as 'en' | 'id');
     }
 
-    const savedBotName = localStorage.getItem("botName");
-    if (savedBotName) {
-      setBotName(savedBotName);
+    const savedCharacterName = localStorage.getItem("characterName");
+    if (savedCharacterName) {
+      setCharacterName(savedCharacterName);
     }
 
     const savedAvatarUrl = localStorage.getItem("avatarUrl");
@@ -132,7 +132,7 @@ export default function Home() {
   }, []);
 
   const t = translations[language];
-  const botInitials = botName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+  const characterInitials = characterName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
 
   // Save state to localStorage whenever it changes
   useEffect(() => {
@@ -140,8 +140,8 @@ export default function Home() {
   }, [language]);
   
   useEffect(() => {
-    localStorage.setItem("botName", botName);
-  }, [botName]);
+    localStorage.setItem("characterName", characterName);
+  }, [characterName]);
 
   useEffect(() => {
     localStorage.setItem("avatarUrl", avatarUrl);
@@ -203,12 +203,12 @@ export default function Home() {
         language: language,
         storyMode: storyMode,
       });
-      const botMessage: Message = {
+      const characterMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
         content: result.response,
       };
-      setMessages((prev) => [...prev, botMessage]);
+      setMessages((prev) => [...prev, characterMessage]);
     } catch (error) {
       console.error("Error getting response:", error);
       const errorMessage: Message = {
@@ -234,20 +234,22 @@ export default function Home() {
             <DialogTrigger asChild>
               <Avatar className="w-12 h-12 border-2 border-primary/50 cursor-pointer hover:opacity-80 transition-opacity">
                 <AvatarImage src={avatarUrl} alt="Custom Chat Character Avatar" data-ai-hint="robot avatar" />
-                <AvatarFallback>{botInitials}</AvatarFallback>
+                <AvatarFallback>{characterInitials}</AvatarFallback>
               </Avatar>
             </DialogTrigger>
             <DialogContent className="p-0 bg-transparent border-none shadow-none max-w-lg">
                 <DialogTitle className="sr-only">{t.avatarPreviewTitle}</DialogTitle>
                 <img src={avatarUrl} alt="Enlarged Avatar" className="rounded-md w-full h-auto object-contain" />
-                 <DialogClose className="absolute right-2 top-2 rounded-full p-1.5 bg-black/50 text-white hover:bg-black/70 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
-                    <X className="h-5 w-5" />
-                    <span className="sr-only">Close</span>
+                 <DialogClose asChild>
+                    <Button variant="ghost" size="icon" className="absolute right-2 top-2 rounded-full p-1.5 bg-black/50 text-white hover:bg-black/70 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 h-8 w-8">
+                        <X className="h-5 w-5" />
+                        <span className="sr-only">Close</span>
+                    </Button>
                 </DialogClose>
             </DialogContent>
           </Dialog>
           <div>
-            <h1 className="text-xl font-bold font-headline text-primary">{botName}</h1>
+            <h1 className="text-xl font-bold font-headline text-primary">{characterName}</h1>
             <p className="text-sm text-muted-foreground flex items-center gap-1.5">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
@@ -277,8 +279,8 @@ export default function Home() {
                   setInteractionStyle={setInteractionStyle}
                   currentStyle={interactionStyle}
                   closeSheet={() => setSheetOpen(false)}
-                  setBotName={setBotName}
-                  currentBotName={botName}
+                  setCharacterName={setCharacterName}
+                  currentCharacterName={characterName}
                   setLanguage={setLanguage}
                   currentLanguage={language}
                   handleClearChat={handleClearChat}
@@ -308,13 +310,13 @@ export default function Home() {
         <ScrollArea className="h-full" viewportRef={scrollAreaViewportRef}>
           <div className="p-4 space-y-6">
             {messages.map((m) => (
-              <ChatMessage key={m.id} message={m} avatarUrl={avatarUrl} botInitials={botInitials} />
+              <ChatMessage key={m.id} message={m} avatarUrl={avatarUrl} characterInitials={characterInitials} />
             ))}
             {isLoading && (
               <div className="flex items-end gap-3 justify-start">
                  <Avatar className="h-10 w-10 shadow-sm flex-shrink-0">
                     <AvatarImage src={avatarUrl} alt="Custom Chat Character Avatar" />
-                    <AvatarFallback className='bg-primary/20 text-primary'>{botInitials}</AvatarFallback>
+                    <AvatarFallback className='bg-primary/20 text-primary'>{characterInitials}</AvatarFallback>
                 </Avatar>
                 <div className="flex items-center gap-2 p-4 rounded-2xl rounded-bl-none bg-card shadow-md">
                   <Loader2 className="h-5 w-5 animate-spin text-primary" />

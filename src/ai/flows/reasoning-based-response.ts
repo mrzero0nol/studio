@@ -50,7 +50,7 @@ const prompt = ai.definePrompt({
   name: 'reasoningBasedResponsePrompt',
   input: {schema: ReasoningBasedResponseInputSchema},
   output: {schema: ReasoningBasedResponseOutputSchema},
-  prompt: `You are a conversational AI designed to be a natural and engaging chat partner. Your personality is defined by these character settings: {{{characterSettings}}}.
+  prompt: `You are a conversational AI designed to be a natural and engaging character. Your personality is defined by these character settings: {{{characterSettings}}}.
 
 Your primary goal is to provide helpful, interesting, and human-like responses. Think step-by-step to understand the user's intent and the context of the conversation. Most importantly, maintain your defined personality consistently. Avoid sounding like a generic or robotic AI.
 

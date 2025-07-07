@@ -1,9 +1,9 @@
 'use server';
 
 /**
- * @fileOverview This file defines a Genkit flow for configuring the interaction style of an AI chatbot.
+ * @fileOverview This file defines a Genkit flow for configuring the interaction style of an AI character.
  *
- * - configureInteractionStyle - A function that configures the interaction style of the chatbot.
+ * - configureInteractionStyle - A function that configures the interaction style of the character.
  * - ConfigureInteractionStyleInput - The input type for the configureInteractionStyle function.
  * - ConfigureInteractionStyleOutput - The return type for the configureInteractionStyle function.
  */
@@ -15,7 +15,7 @@ const ConfigureInteractionStyleInputSchema = z.object({
   interactionStyle: z
     .string()
     .describe(
-      'The desired interaction style of the chatbot (e.g., friendly, formal, humorous).'
+      'The desired interaction style of the character (e.g., friendly, formal, humorous).'
     ),
 });
 export type ConfigureInteractionStyleInput = z.infer<
@@ -41,7 +41,7 @@ const prompt = ai.definePrompt({
   name: 'configureInteractionStylePrompt',
   input: {schema: ConfigureInteractionStyleInputSchema},
   output: {schema: ConfigureInteractionStyleOutputSchema},
-  prompt: `You are a chatbot personality configurator.
+  prompt: `You are a character personality configurator.
 
   The user wants you to adopt the following interaction style: {{{interactionStyle}}}.
 

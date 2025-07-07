@@ -6,10 +6,10 @@ import type { Message } from "@/app/page";
 interface ChatMessageProps {
   message: Message;
   avatarUrl: string;
-  botInitials: string;
+  characterInitials: string;
 }
 
-function parseContent(content: string, isBot: boolean) {
+function parseContent(content: string, isAssistant: boolean) {
   const parts = content.split(/(\*.*?\*)/g);
   return (
     <>
@@ -19,7 +19,7 @@ function parseContent(content: string, isBot: boolean) {
             <em
               key={index}
               className={`italic ${
-                isBot ? "text-muted-foreground" : "text-black/80"
+                isAssistant ? "text-muted-foreground" : "text-black/80"
               }`}
             >
               {part.slice(1, -1)}
@@ -32,31 +32,31 @@ function parseContent(content: string, isBot: boolean) {
   );
 }
 
-export function ChatMessage({ message, avatarUrl, botInitials }: ChatMessageProps) {
-  const isBot = message.role === "assistant";
+export function ChatMessage({ message, avatarUrl, characterInitials }: ChatMessageProps) {
+  const isAssistant = message.role === "assistant";
   return (
     <div
       className={`flex items-end gap-3 ${
-        isBot ? "justify-start" : "justify-end"
+        isAssistant ? "justify-start" : "justify-end"
       }`}
     >
-      {isBot && (
+      {isAssistant && (
         <Avatar className="h-10 w-10 shadow-sm flex-shrink-0">
           <AvatarImage src={avatarUrl} alt="Custom Chat Character Avatar" />
           <AvatarFallback className="bg-primary/20 text-primary">
-            {botInitials}
+            {characterInitials}
           </AvatarFallback>
         </Avatar>
       )}
       <div
         className={`max-w-[75%] rounded-2xl p-4 shadow-md ${
-          isBot
+          isAssistant
             ? "bg-card text-card-foreground rounded-bl-none"
             : "bg-primary text-primary-foreground rounded-br-none"
         }`}
       >
         <p className="text-sm leading-relaxed whitespace-pre-wrap">
-          {parseContent(message.content, isBot)}
+          {parseContent(message.content, isAssistant)}
         </p>
       </div>
     </div>

@@ -75,8 +75,8 @@ interface SettingsFormProps {
   setInteractionStyle: (style: string) => void;
   currentStyle: string;
   closeSheet: () => void;
-  setBotName: (name: string) => void;
-  currentBotName: string;
+  setCharacterName: (name: string) => void;
+  currentCharacterName: string;
   setLanguage: (lang: 'en' | 'id') => void;
   currentLanguage: 'en' | 'id';
   handleClearChat: () => void;
@@ -100,27 +100,27 @@ const translations = {
       avatarGeneratedToastDesc: 'Your new avatar is ready.',
       avatarErrorToast: 'Uh oh! Something went wrong.',
       avatarErrorToastDesc: 'Could not generate the avatar. Please try again.',
-      nameTitle: 'Bot Name',
-      nameLabel: 'Bot Name',
+      nameTitle: 'Character Name',
+      nameLabel: 'Character Name',
       namePlaceholder: 'e.g., Custom Chat Character',
-      nameHint: 'Give your bot a unique name.',
+      nameHint: 'Give your character a unique name.',
       saveNameButton: 'Save Name',
-      nameUpdatedToast: 'Bot Name Updated!',
-      nameUpdatedToastDesc: "The bot's name is now {name}.",
+      nameUpdatedToast: 'Character Name Updated!',
+      nameUpdatedToastDesc: "The character's name is now {name}.",
       styleTitle: 'Interaction Style',
-      styleLabel: 'Bot Personality',
+      styleLabel: 'Character Personality',
       stylePlaceholder: 'e.g., friendly and helpful',
-      styleHint: 'How should the bot behave? (e.g., formal, witty, sarcastic)',
+      styleHint: 'How should the character behave? (e.g., formal, witty, sarcastic)',
       saveStyleButton: 'Save Style',
       styleUpdatedToast: 'Interaction Style Updated!',
-      styleUpdatedToastDesc: 'The bot will now respond in a {style} manner.',
+      styleUpdatedToastDesc: 'The character will now respond in a {style} manner.',
       styleErrorToastDesc: 'Could not update the interaction style.',
       languageTitle: 'Language',
       languageLabel: 'Response Language',
-      languageHint: 'Choose the language for the bot to respond in.',
+      languageHint: 'Choose the language for the character to respond in.',
       saveLanguageButton: 'Save Language',
       languageUpdatedToast: 'Language Updated!',
-      languageUpdatedToastDesc: 'The bot will now respond in {language}.',
+      languageUpdatedToastDesc: 'The character will now respond in {language}.',
       english: 'English',
       indonesian: 'Indonesian',
       themeTitle: "UI Theme",
@@ -135,7 +135,7 @@ const translations = {
       themeForest: "Forest Whisper",
       storyModeTitle: "Story Mode",
       storyModeLabel: "Enable Story Mode",
-      storyModeHint: "Allows the bot to use narrative actions, like *smiles*.",
+      storyModeHint: "Allows the character to use narrative actions, like *smiles*.",
       dangerZoneTitle: "Clear Chat",
       clearChatButtonLabel: "Clear chat history",
       clearChatDialogTitle: "Are you absolutely sure?",
@@ -159,27 +159,27 @@ const translations = {
       avatarGeneratedToastDesc: 'Avatar baru Anda sudah siap.',
       avatarErrorToast: 'Oh tidak! Terjadi kesalahan.',
       avatarErrorToastDesc: 'Tidak dapat membuat avatar. Silakan coba lagi.',
-      nameTitle: 'Nama Bot',
-      nameLabel: 'Nama Bot',
+      nameTitle: 'Nama Karakter',
+      nameLabel: 'Nama Karakter',
       namePlaceholder: 'contoh: Custom Chat Character',
-      nameHint: 'Berikan nama unik untuk bot Anda.',
+      nameHint: 'Berikan nama unik untuk karakter Anda.',
       saveNameButton: 'Simpan Nama',
-      nameUpdatedToast: 'Nama Bot Diperbarui!',
-      nameUpdatedToastDesc: 'Nama bot sekarang adalah {name}.',
+      nameUpdatedToast: 'Nama Karakter Diperbarui!',
+      nameUpdatedToastDesc: 'Nama karakter sekarang adalah {name}.',
       styleTitle: 'Gaya Interaksi',
-      styleLabel: 'Kepribadian Bot',
+      styleLabel: 'Kepribadian Karakter',
       stylePlaceholder: 'contoh: ramah dan membantu',
-      styleHint: 'Bagaimana bot harus berperilaku? (misalnya formal, jenaka, sarkastik)',
+      styleHint: 'Bagaimana karakter harus berperilaku? (misalnya formal, jenaka, sarkastik)',
       saveStyleButton: 'Simpan Gaya',
       styleUpdatedToast: 'Gaya Interaksi Diperbarui!',
-      styleUpdatedToastDesc: 'Bot sekarang akan merespons dengan gaya {style}.',
+      styleUpdatedToastDesc: 'Karakter sekarang akan merespons dengan gaya {style}.',
       styleErrorToastDesc: 'Tidak dapat memperbarui gaya interaksi.',
       languageTitle: 'Bahasa',
       languageLabel: 'Bahasa Respons',
-      languageHint: 'Pilih bahasa respons bot.',
+      languageHint: 'Pilih bahasa respons karakter.',
       saveLanguageButton: 'Simpan Bahasa',
       languageUpdatedToast: 'Bahasa Diperbarui!',
-      languageUpdatedToastDesc: 'Bot sekarang akan merespons dalam {language}.',
+      languageUpdatedToastDesc: 'Karakter sekarang akan merespons dalam {language}.',
       english: 'English',
       indonesian: 'Bahasa Indonesia',
       themeTitle: "Tema Tampilan",
@@ -194,7 +194,7 @@ const translations = {
       themeForest: "Bisikan Hutan",
       storyModeTitle: "Mode Cerita",
       storyModeLabel: "Aktifkan Mode Cerita",
-      storyModeHint: "Izinkan bot menggunakan tindakan naratif, seperti *tersenyum*.",
+      storyModeHint: "Izinkan karakter menggunakan tindakan naratif, seperti *tersenyum*.",
       dangerZoneTitle: "Bersihkan Chat",
       clearChatButtonLabel: "Bersihkan riwayat obrolan",
       clearChatDialogTitle: "Apakah Anda benar-benar yakin?",
@@ -215,8 +215,8 @@ export function SettingsForm({
   setInteractionStyle,
   currentStyle,
   closeSheet,
-  setBotName,
-  currentBotName,
+  setCharacterName,
+  currentCharacterName,
   setLanguage,
   currentLanguage,
   handleClearChat,
@@ -232,7 +232,7 @@ export function SettingsForm({
   const [isStyleLoading, setIsStyleLoading] = useState(false);
   
   const t = translations[currentLanguage];
-  const botInitials = currentBotName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+  const characterInitials = currentCharacterName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
 
   const avatarForm = useForm<z.infer<typeof avatarFormSchema>>({
     resolver: zodResolver(avatarFormSchema),
@@ -244,7 +244,7 @@ export function SettingsForm({
   const nameForm = useForm<z.infer<typeof nameFormSchema>>({
     resolver: zodResolver(nameFormSchema),
     defaultValues: {
-      name: currentBotName,
+      name: currentCharacterName,
     },
   });
 
@@ -305,7 +305,7 @@ export function SettingsForm({
   }
   
   function onNameSubmit(values: z.infer<typeof nameFormSchema>) {
-    setBotName(values.name);
+    setCharacterName(values.name);
     toast({
       title: t.nameUpdatedToast,
       description: t.nameUpdatedToastDesc.replace('{name}', values.name),
@@ -366,7 +366,7 @@ export function SettingsForm({
               <Label htmlFor="avatar-preview">{t.currentAvatar}</Label>
               <Avatar id="avatar-preview" className="w-24 h-24 border-2 border-primary/50">
                 <AvatarImage src={currentAvatarUrl} alt="Current Avatar" data-ai-hint="robot avatar" />
-                <AvatarFallback>{botInitials}</AvatarFallback>
+                <AvatarFallback>{characterInitials}</AvatarFallback>
               </Avatar>
             </div>
             <Form {...avatarForm}>
@@ -402,7 +402,7 @@ export function SettingsForm({
             </Form>
           </div>
 
-          {/* Bot Name Section */}
+          {/* Character Name Section */}
           <div className="space-y-4">
             <h3 className="text-lg font-medium">{t.nameTitle}</h3>
             <Form {...nameForm}>
