@@ -70,6 +70,8 @@ export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [storyMode, setStoryMode] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [avatarDescription, setAvatarDescription] = useState("A friendly, futuristic robot with a purple and blue color scheme.");
+  const [avatarNegativePrompt, setAvatarNegativePrompt] = useState("");
 
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -115,6 +117,15 @@ export default function Home() {
       setDarkMode(true);
     } else {
       setDarkMode(JSON.parse(savedDarkMode));
+    }
+
+    const savedAvatarDescription = localStorage.getItem("avatarDescription");
+    if (savedAvatarDescription) {
+      setAvatarDescription(savedAvatarDescription);
+    }
+    const savedAvatarNegativePrompt = localStorage.getItem("avatarNegativePrompt");
+    if (savedAvatarNegativePrompt) {
+      setAvatarNegativePrompt(savedAvatarNegativePrompt);
     }
 
     const savedMessages = localStorage.getItem("chatMessages");
@@ -163,6 +174,14 @@ export default function Home() {
       document.documentElement.classList.remove("dark");
     }
   }, [darkMode]);
+
+  useEffect(() => {
+    localStorage.setItem("avatarDescription", avatarDescription);
+  }, [avatarDescription]);
+
+  useEffect(() => {
+    localStorage.setItem("avatarNegativePrompt", avatarNegativePrompt);
+  }, [avatarNegativePrompt]);
 
   useEffect(() => {
     localStorage.setItem("theme", theme);
@@ -290,6 +309,10 @@ export default function Home() {
                   currentStoryMode={storyMode}
                   setDarkMode={setDarkMode}
                   currentDarkMode={darkMode}
+                  currentAvatarDescription={avatarDescription}
+                  setAvatarDescription={setAvatarDescription}
+                  currentAvatarNegativePrompt={avatarNegativePrompt}
+                  setAvatarNegativePrompt={setAvatarNegativePrompt}
                 />
               </div>
             </ScrollArea>

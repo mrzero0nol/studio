@@ -87,6 +87,10 @@ interface SettingsFormProps {
   currentStoryMode: boolean;
   setDarkMode: (enabled: boolean) => void;
   currentDarkMode: boolean;
+  currentAvatarDescription: string;
+  setAvatarDescription: (description: string) => void;
+  currentAvatarNegativePrompt: string;
+  setAvatarNegativePrompt: (prompt: string) => void;
 }
 
 const translations = {
@@ -233,6 +237,10 @@ export function SettingsForm({
   currentStoryMode,
   setDarkMode,
   currentDarkMode,
+  currentAvatarDescription,
+  setAvatarDescription,
+  currentAvatarNegativePrompt,
+  setAvatarNegativePrompt,
 }: SettingsFormProps) {
   const { toast } = useToast();
   const [isAvatarLoading, setIsAvatarLoading] = useState(false);
@@ -244,8 +252,8 @@ export function SettingsForm({
   const avatarForm = useForm<z.infer<typeof avatarFormSchema>>({
     resolver: zodResolver(avatarFormSchema),
     defaultValues: {
-      description: "A friendly, futuristic robot with a purple and blue color scheme.",
-      negativePrompt: "",
+      description: currentAvatarDescription,
+      negativePrompt: currentAvatarNegativePrompt,
     },
   });
 
@@ -289,6 +297,8 @@ export function SettingsForm({
         });
       } else if (result.avatarDataUri) {
         setAvatarUrl(result.avatarDataUri);
+        setAvatarDescription(values.description);
+        setAvatarNegativePrompt(values.negativePrompt || "");
         toast({
           title: t.avatarGeneratedToast,
           description: t.avatarGeneratedToastDesc,
