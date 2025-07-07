@@ -45,6 +45,7 @@ const avatarFormSchema = z.object({
   description: z.string().min(10, {
     message: "Description must be at least 10 characters.",
   }),
+  negativePrompt: z.string().optional(),
 });
 
 const nameFormSchema = z.object({
@@ -95,6 +96,9 @@ const translations = {
       avatarDescriptionLabel: 'Avatar Description',
       avatarDescriptionPlaceholder: 'e.g., a wizard cat wearing a starry robe',
       avatarDescriptionHint: 'Describe the avatar you want to create.',
+      negativePromptLabel: 'Negative Prompt',
+      negativePromptPlaceholder: 'e.g., blurry, text, watermark, extra limbs',
+      negativePromptHint: 'Describe elements to exclude from the avatar.',
       generateAvatarButton: 'Generate Avatar',
       avatarGeneratedToast: 'Avatar Generated!',
       avatarGeneratedToastDesc: 'Your new avatar is ready.',
@@ -154,6 +158,9 @@ const translations = {
       avatarDescriptionLabel: 'Deskripsi Avatar',
       avatarDescriptionPlaceholder: 'contoh: kucing penyihir berjubah bintang',
       avatarDescriptionHint: 'Jelaskan avatar yang ingin Anda buat.',
+      negativePromptLabel: 'Prompt Negatif',
+      negativePromptPlaceholder: 'contoh: buram, teks, watermark, anggota tubuh tambahan',
+      negativePromptHint: 'Jelaskan elemen yang tidak ingin disertakan di avatar.',
       generateAvatarButton: 'Buat Avatar',
       avatarGeneratedToast: 'Avatar Dibuat!',
       avatarGeneratedToastDesc: 'Avatar baru Anda sudah siap.',
@@ -238,6 +245,7 @@ export function SettingsForm({
     resolver: zodResolver(avatarFormSchema),
     defaultValues: {
       description: "A friendly, futuristic robot with a purple and blue color scheme.",
+      negativePrompt: "",
     },
   });
 
@@ -272,7 +280,7 @@ export function SettingsForm({
   async function onAvatarSubmit(values: z.infer<typeof avatarFormSchema>) {
     setIsAvatarLoading(true);
     try {
-      const result = await createAvatar({ description: values.description });
+      const result = await createAvatar({ description: values.description, negativePrompt: values.negativePrompt });
       if (result.error) {
         toast({
           variant: "destructive",
@@ -385,6 +393,25 @@ export function SettingsForm({
                       </FormControl>
                       <p className="text-sm text-muted-foreground">
                         {t.avatarDescriptionHint}
+                      </p>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={avatarForm.control}
+                  name="negativePrompt"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t.negativePromptLabel}</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder={t.negativePromptPlaceholder}
+                          {...field}
+                        />
+                      </FormControl>
+                      <p className="text-sm text-muted-foreground">
+                        {t.negativePromptHint}
                       </p>
                       <FormMessage />
                     </FormItem>

@@ -23,6 +23,7 @@ export const getResponse = async (input: z.infer<typeof reasoningSchema>) => {
 
 const avatarSchema = z.object({
   description: z.string(),
+  negativePrompt: z.string().optional(),
 });
 
 export const createAvatar = async (input: z.infer<typeof avatarSchema>) => {
