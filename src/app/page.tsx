@@ -47,7 +47,7 @@ const translations = {
     avatarPreviewTitle: "Avatar Preview",
   },
   id: {
-    online: 'Daring',
+    online: 'Online',
     openSettings: 'Buka Pengaturan',
     settingsTitle: 'Pengaturan',
     thinking: 'Sedang mengetik...',
