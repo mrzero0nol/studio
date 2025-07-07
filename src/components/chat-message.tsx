@@ -42,7 +42,7 @@ export function ChatMessage({ message, avatarUrl, botInitials }: ChatMessageProp
     >
       {isBot && (
         <Avatar className="h-10 w-10 shadow-sm flex-shrink-0">
-          <AvatarImage src={avatarUrl} alt="PersonaForge Avatar" />
+          <AvatarImage src={avatarUrl} alt="Custom Chat Character Avatar" />
           <AvatarFallback className="bg-primary/20 text-primary">
             {botInitials}
           </AvatarFallback>

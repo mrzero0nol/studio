@@ -53,9 +53,9 @@ export default function Home() {
   // Initialize state with default values for SSR and initial client render
   const [theme, setTheme] = useState<Theme>('default');
   const [language, setLanguage] = useState<'en' | 'id'>('en');
-  const [avatarUrl, setAvatarUrl] = useState("https://placehold.co/128x128/9400D3/FFFFFF.png?text=PF");
+  const [avatarUrl, setAvatarUrl] = useState("https://placehold.co/128x128/9400D3/FFFFFF.png?text=CC");
   const [interactionStyle, setInteractionStyle] = useState("a friendly and empathetic companion who communicates in a natural, conversational manner, like a real person. Use casual language, be expressive with emojis, and avoid sounding robotic.");
-  const [botName, setBotName] = useState("PersonaForge");
+  const [botName, setBotName] = useState("Custom Chat Character");
   const [messages, setMessages] = useState<Message[]>([]);
   const [storyMode, setStoryMode] = useState(false);
 
@@ -202,7 +202,7 @@ export default function Home() {
       <header className="flex items-center justify-between p-3 border-b shadow-sm bg-card/50 backdrop-blur-sm sticky top-0 z-10">
         <div className="flex items-center gap-3">
           <Avatar className="w-12 h-12 border-2 border-primary/50">
-            <AvatarImage src={avatarUrl} alt="PersonaForge Avatar" data-ai-hint="robot avatar" />
+            <AvatarImage src={avatarUrl} alt="Custom Chat Character Avatar" data-ai-hint="robot avatar" />
             <AvatarFallback>{botInitials}</AvatarFallback>
           </Avatar>
           <div>
@@ -265,7 +265,7 @@ export default function Home() {
             {isLoading && (
               <div className="flex items-end gap-3 justify-start">
                  <Avatar className="h-10 w-10 shadow-sm flex-shrink-0">
-                    <AvatarImage src={avatarUrl} alt="PersonaForge Avatar" />
+                    <AvatarImage src={avatarUrl} alt="Custom Chat Character Avatar" />
                     <AvatarFallback className='bg-primary/20 text-primary'>{botInitials}</AvatarFallback>
                 </Avatar>
                 <div className="flex items-center gap-2 p-4 rounded-2xl rounded-bl-none bg-card shadow-md">

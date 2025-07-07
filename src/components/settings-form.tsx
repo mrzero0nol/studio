@@ -46,8 +46,8 @@ const avatarFormSchema = z.object({
 const nameFormSchema = z.object({
   name: z.string().min(1, {
     message: "Name cannot be empty.",
-  }).max(20, {
-    message: "Name cannot be longer than 20 characters.",
+  }).max(30, {
+    message: "Name cannot be longer than 30 characters.",
   }),
 });
 
@@ -94,7 +94,7 @@ const translations = {
       avatarErrorToastDesc: 'Could not generate the avatar. Please try again.',
       nameTitle: 'Bot Name',
       nameLabel: 'Bot Name',
-      namePlaceholder: 'e.g., PersonaForge',
+      namePlaceholder: 'e.g., Custom Chat Character',
       nameHint: 'Give your bot a unique name.',
       saveNameButton: 'Save Name',
       nameUpdatedToast: 'Bot Name Updated!',
@@ -147,7 +147,7 @@ const translations = {
       avatarErrorToastDesc: 'Tidak dapat membuat avatar. Silakan coba lagi.',
       nameTitle: 'Nama Bot',
       nameLabel: 'Nama Bot',
-      namePlaceholder: 'contoh: PersonaForge',
+      namePlaceholder: 'contoh: Custom Chat Character',
       nameHint: 'Berikan nama unik untuk bot Anda.',
       saveNameButton: 'Simpan Nama',
       nameUpdatedToast: 'Nama Bot Diperbarui!',
