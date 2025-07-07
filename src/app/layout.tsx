@@ -3,7 +3,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: 'PersonaForge Chat',
+  title: 'Custom Chat Character',
   description: 'Create your own AI chat companion.',
 };
 
