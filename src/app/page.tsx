@@ -272,6 +272,7 @@ export default function Home() {
             <ScrollArea className="flex-1">
               <div className="pr-4">
                 <SettingsForm
+                  currentAvatarUrl={avatarUrl}
                   setAvatarUrl={setAvatarUrl}
                   setInteractionStyle={setInteractionStyle}
                   currentStyle={interactionStyle}

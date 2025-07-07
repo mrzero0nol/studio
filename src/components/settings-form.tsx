@@ -39,6 +39,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const avatarFormSchema = z.object({
   description: z.string().min(10, {
@@ -69,6 +70,7 @@ const themeFormSchema = z.object({
 });
 
 interface SettingsFormProps {
+  currentAvatarUrl: string;
   setAvatarUrl: (url: string) => void;
   setInteractionStyle: (style: string) => void;
   currentStyle: string;
@@ -88,6 +90,7 @@ interface SettingsFormProps {
 
 const translations = {
     en: {
+      currentAvatar: 'Current Avatar',
       avatarTitle: 'Avatar Generation',
       avatarDescriptionLabel: 'Avatar Description',
       avatarDescriptionPlaceholder: 'e.g., a wizard cat wearing a starry robe',
@@ -146,6 +149,7 @@ const translations = {
       darkModeHint: "Reduces eye strain in low light.",
     },
     id: {
+      currentAvatar: 'Avatar Saat Ini',
       avatarTitle: 'Pembuatan Avatar',
       avatarDescriptionLabel: 'Deskripsi Avatar',
       avatarDescriptionPlaceholder: 'contoh: kucing penyihir berjubah bintang',
@@ -206,6 +210,7 @@ const translations = {
   };
 
 export function SettingsForm({
+  currentAvatarUrl,
   setAvatarUrl,
   setInteractionStyle,
   currentStyle,
@@ -227,6 +232,7 @@ export function SettingsForm({
   const [isStyleLoading, setIsStyleLoading] = useState(false);
   
   const t = translations[currentLanguage];
+  const botInitials = currentBotName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
 
   const avatarForm = useForm<z.infer<typeof avatarFormSchema>>({
     resolver: zodResolver(avatarFormSchema),
@@ -359,6 +365,13 @@ export function SettingsForm({
           {/* Avatar Section */}
           <div className="space-y-4">
             <h3 className="text-lg font-medium">{t.avatarTitle}</h3>
+            <div className="flex flex-col items-center gap-2 pt-2 pb-4">
+              <Label htmlFor="avatar-preview">{t.currentAvatar}</Label>
+              <Avatar id="avatar-preview" className="w-24 h-24 border-2 border-primary/50">
+                <AvatarImage src={currentAvatarUrl} alt="Current Avatar" data-ai-hint="robot avatar" />
+                <AvatarFallback>{botInitials}</AvatarFallback>
+              </Avatar>
+            </div>
             <Form {...avatarForm}>
               <form onSubmit={avatarForm.handleSubmit(onAvatarSubmit)} className="space-y-4">
                 <FormField
