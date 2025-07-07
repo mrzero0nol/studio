@@ -14,6 +14,8 @@ import {
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
@@ -44,6 +46,7 @@ const translations = {
     errorMessage: "Sorry, I encountered an error. Please try again.",
     clearChat: "Clear Chat",
     dialogCancel: "Cancel",
+    avatarPreviewTitle: "Avatar Preview",
   },
   id: {
     online: 'Daring',
@@ -55,6 +58,7 @@ const translations = {
     errorMessage: "Maaf, terjadi kesalahan. Silakan coba lagi.",
     clearChat: "Bersihkan Obrolan",
     dialogCancel: "Batal",
+    avatarPreviewTitle: "Pratinjau Avatar",
   },
 };
 
@@ -219,6 +223,9 @@ export default function Home() {
               </Avatar>
             </AlertDialogTrigger>
             <AlertDialogContent className="p-2 bg-card/80 backdrop-blur-sm border-primary/50 max-w-lg">
+                <AlertDialogHeader>
+                  <AlertDialogTitle className="sr-only">{t.avatarPreviewTitle}</AlertDialogTitle>
+                </AlertDialogHeader>
                 <img src={avatarUrl} alt="Enlarged Avatar" className="rounded-md w-full h-auto object-contain" />
                 <AlertDialogFooter className="sm:justify-center mt-2">
                     <AlertDialogCancel>{t.dialogCancel}</AlertDialogCancel>
