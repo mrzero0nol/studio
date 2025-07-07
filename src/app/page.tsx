@@ -12,6 +12,7 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -219,6 +220,7 @@ export default function Home() {
               </Avatar>
             </DialogTrigger>
             <DialogContent className="p-0 bg-transparent border-none shadow-none max-w-lg">
+                <DialogTitle className="sr-only">{t.avatarPreviewTitle}</DialogTitle>
                 <img src={avatarUrl} alt="Enlarged Avatar" className="rounded-md w-full h-auto object-contain" />
             </DialogContent>
           </Dialog>
