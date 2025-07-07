@@ -248,7 +248,7 @@ export default function Home() {
               </div>
             </ScrollArea>
              <div className="p-4 text-center text-sm text-muted-foreground">
-              <div>custom character Chat bot</div>
+              <div>Custom Chat Character</div>
               <div>V1.36.2 (beta)</div>
               <div>farqonzero.dev</div>
             </div>
