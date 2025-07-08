@@ -544,8 +544,8 @@ export function SettingsForm({
         <TabsTrigger value="general">{t.generalSettingsTitle}</TabsTrigger>
       </TabsList>
       <TabsContent value="character">
-        <div className="space-y-8 pt-4">
-          <div className="space-y-4">
+        <div className="space-y-6 pt-4">
+          <div className="space-y-3">
             <h3 className="text-lg font-semibold tracking-tight">{t.avatarTitle}</h3>
             <div className="flex flex-col items-center gap-2 pt-2 pb-4 text-center">
               <Label>{t.currentAvatar}</Label>
@@ -569,7 +569,7 @@ export function SettingsForm({
               </Dialog>
             </div>
             <Form {...avatarForm}>
-              <form onSubmit={avatarForm.handleSubmit(onAvatarSubmit)} className="space-y-4">
+              <form onSubmit={avatarForm.handleSubmit(onAvatarSubmit)} className="space-y-3">
                 <FormField
                   control={avatarForm.control}
                   name="description"
@@ -620,7 +620,7 @@ export function SettingsForm({
             </Form>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             <h3 className="text-lg font-semibold tracking-tight">{t.uploadAvatarTitle}</h3>
             <input
               type="file"
@@ -645,10 +645,10 @@ export function SettingsForm({
           </div>
 
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             <h3 className="text-lg font-semibold tracking-tight">{t.nameTitle}</h3>
             <Form {...nameForm}>
-              <form onSubmit={nameForm.handleSubmit(onNameSubmit)} className="space-y-4">
+              <form onSubmit={nameForm.handleSubmit(onNameSubmit)} className="space-y-3">
                 <FormField
                   control={nameForm.control}
                   name="name"
@@ -672,10 +672,10 @@ export function SettingsForm({
             </Form>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             <h3 className="text-lg font-semibold tracking-tight">{t.styleTitle}</h3>
             <Form {...styleForm}>
-              <form onSubmit={styleForm.handleSubmit(onStyleSubmit)} className="space-y-4">
+              <form onSubmit={styleForm.handleSubmit(onStyleSubmit)} className="space-y-3">
                 <FormField
                   control={styleForm.control}
                   name="style"
@@ -702,11 +702,11 @@ export function SettingsForm({
         </div>
       </TabsContent>
        <TabsContent value="user">
-        <div className="space-y-8 pt-4">
-          <div className="space-y-4">
+        <div className="space-y-6 pt-4">
+          <div className="space-y-3">
             <h3 className="text-lg font-semibold tracking-tight">{t.userNameTitle}</h3>
             <Form {...userNameForm}>
-              <form onSubmit={userNameForm.handleSubmit(onUserNameSubmit)} className="space-y-4">
+              <form onSubmit={userNameForm.handleSubmit(onUserNameSubmit)} className="space-y-3">
                 <FormField
                   control={userNameForm.control}
                   name="name"
@@ -726,15 +726,15 @@ export function SettingsForm({
             </Form>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             <h3 className="text-lg font-semibold tracking-tight">{t.userGenderTitle}</h3>
             <Form {...userGenderForm}>
-              <form onSubmit={userGenderForm.handleSubmit(onUserGenderSubmit)} className="space-y-4">
+              <form onSubmit={userGenderForm.handleSubmit(onUserGenderSubmit)} className="space-y-3">
                 <FormField
                   control={userGenderForm.control}
                   name="gender"
                   render={({ field }) => (
-                    <FormItem className="space-y-3">
+                    <FormItem className="space-y-2">
                       <FormLabel>{t.userGenderLabel}</FormLabel>
                       <FormControl>
                         <RadioGroup
@@ -742,15 +742,15 @@ export function SettingsForm({
                           value={field.value}
                           className="flex flex-col space-y-1"
                         >
-                          <div className="flex items-center space-x-3 space-y-0">
+                          <div className="flex items-center space-x-2 space-y-0">
                             <RadioGroupItem value="male" id="gender-male" />
                             <Label htmlFor="gender-male" className="font-normal">{t.male}</Label>
                           </div>
-                          <div className="flex items-center space-x-3 space-y-0">
+                          <div className="flex items-center space-x-2 space-y-0">
                             <RadioGroupItem value="female" id="gender-female" />
                             <Label htmlFor="gender-female" className="font-normal">{t.female}</Label>
                           </div>
-                          <div className="flex items-center space-x-3 space-y-0">
+                          <div className="flex items-center space-x-2 space-y-0">
                             <RadioGroupItem value="not_specified" id="gender-not_specified" />
                             <Label htmlFor="gender-not_specified" className="font-normal">{t.notSpecified}</Label>
                           </div>
@@ -766,10 +766,10 @@ export function SettingsForm({
             </Form>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             <h3 className="text-lg font-semibold tracking-tight">{t.userRoleTitle}</h3>
             <Form {...userRoleForm}>
-              <form onSubmit={userRoleForm.handleSubmit(onUserRoleSubmit)} className="space-y-4">
+              <form onSubmit={userRoleForm.handleSubmit(onUserRoleSubmit)} className="space-y-3">
                 <FormField
                   control={userRoleForm.control}
                   name="role"
@@ -791,16 +791,16 @@ export function SettingsForm({
         </div>
       </TabsContent>
       <TabsContent value="general">
-        <div className="space-y-8 pt-4">
-          <div className="space-y-4">
+        <div className="space-y-6 pt-4">
+          <div className="space-y-3">
             <h3 className="text-lg font-semibold tracking-tight">{t.themeTitle}</h3>
             <Form {...themeForm}>
-              <form onSubmit={themeForm.handleSubmit(onThemeSubmit)} className="space-y-4">
+              <form onSubmit={themeForm.handleSubmit(onThemeSubmit)} className="space-y-3">
                 <FormField
                   control={themeForm.control}
                   name="theme"
                   render={({ field }) => (
-                    <FormItem className="space-y-3">
+                    <FormItem className="space-y-2">
                       <FormLabel>{t.themeLabel}</FormLabel>
                       <FormControl>
                         <RadioGroup
@@ -808,19 +808,19 @@ export function SettingsForm({
                           value={field.value}
                           className="flex flex-col space-y-1"
                         >
-                          <div className="flex items-center space-x-3 space-y-0">
+                          <div className="flex items-center space-x-2 space-y-0">
                             <RadioGroupItem value="default" id="theme-default" />
                             <Label htmlFor="theme-default" className="font-normal">{t.themeDefault}</Label>
                           </div>
-                          <div className="flex items-center space-x-3 space-y-0">
+                          <div className="flex items-center space-x-2 space-y-0">
                             <RadioGroupItem value="sunset" id="theme-sunset" />
                             <Label htmlFor="theme-sunset" className="font-normal">{t.themeSunset}</Label>
                           </div>
-                          <div className="flex items-center space-x-3 space-y-0">
+                          <div className="flex items-center space-x-2 space-y-0">
                             <RadioGroupItem value="ocean" id="theme-ocean" />
                             <Label htmlFor="theme-ocean" className="font-normal">{t.themeOcean}</Label>
                           </div>
-                          <div className="flex items-center space-x-3 space-y-0">
+                          <div className="flex items-center space-x-2 space-y-0">
                             <RadioGroupItem value="forest" id="theme-forest" />
                             <Label htmlFor="theme-forest" className="font-normal">{t.themeForest}</Label>
                           </div>
@@ -840,15 +840,15 @@ export function SettingsForm({
             </Form>
           </div>
 
-           <div className="space-y-4">
+           <div className="space-y-3">
               <h3 className="text-lg font-semibold tracking-tight">{t.languageTitle}</h3>
               <Form {...languageForm}>
-                <form onSubmit={languageForm.handleSubmit(onLanguageSubmit)} className="space-y-4">
+                <form onSubmit={languageForm.handleSubmit(onLanguageSubmit)} className="space-y-3">
                   <FormField
                     control={languageForm.control}
                     name="language"
                     render={({ field }) => (
-                      <FormItem className="space-y-3">
+                      <FormItem className="space-y-2">
                         <FormLabel>{t.languageLabel}</FormLabel>
                         <FormControl>
                           <RadioGroup
@@ -856,11 +856,11 @@ export function SettingsForm({
                             value={field.value}
                             className="flex flex-col space-y-1"
                           >
-                            <div className="flex items-center space-x-3 space-y-0">
+                            <div className="flex items-center space-x-2 space-y-0">
                               <RadioGroupItem value="en" id="lang-en" />
                               <Label htmlFor="lang-en" className="font-normal">{t.english}</Label>
                             </div>
-                            <div className="flex items-center space-x-3 space-y-0">
+                            <div className="flex items-center space-x-2 space-y-0">
                               <RadioGroupItem value="id" id="lang-id" />
                               <Label htmlFor="lang-id" className="font-normal">{t.indonesian}</Label>
                             </div>
@@ -880,9 +880,9 @@ export function SettingsForm({
               </Form>
             </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             <h3 className="text-lg font-semibold tracking-tight">{t.storyModeTitle}</h3>
-            <div className="flex flex-row items-center justify-between rounded-lg border p-4">
+            <div className="flex flex-row items-center justify-between rounded-lg border p-3">
                 <div className="space-y-0.5">
                   <Label htmlFor="story-mode-switch" className="text-base">{t.storyModeLabel}</Label>
                   <p className="text-sm text-muted-foreground">{t.storyModeHint}</p>
@@ -895,9 +895,9 @@ export function SettingsForm({
               </div>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             <h3 className="text-lg font-semibold tracking-tight">{t.darkModeTitle}</h3>
-            <div className="flex flex-row items-center justify-between rounded-lg border p-4">
+            <div className="flex flex-row items-center justify-between rounded-lg border p-3">
                 <div className="space-y-0.5">
                   <Label htmlFor="dark-mode-switch" className="text-base">{t.darkModeLabel}</Label>
                   <p className="text-sm text-muted-foreground">{t.darkModeHint}</p>
@@ -910,7 +910,7 @@ export function SettingsForm({
               </div>
           </div>
 
-          <div className="space-y-2 rounded-lg border border-destructive/50 bg-destructive/5 p-4">
+          <div className="space-y-2 rounded-lg border border-destructive/50 bg-destructive/5 p-3">
             <h3 className="text-lg font-semibold tracking-tight text-destructive">{t.dangerZoneTitle}</h3>
             <p className="text-sm text-destructive/80">
               {t.clearChatDialogDescription}
