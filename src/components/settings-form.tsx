@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Loader2, Wand2, Trash2 } from "lucide-react";
+import { Loader2, Wand2, Trash2, Upload, Download } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import {
@@ -196,6 +196,15 @@ const translations = {
       saveUserRoleButton: 'Save Role',
       userRoleUpdatedToast: 'Role Updated!',
       userRoleUpdatedToastDesc: 'Your role has been set.',
+      uploadAvatarTitle: 'Upload & Download',
+      uploadAvatarButton: 'Upload Avatar',
+      downloadAvatarButton: 'Download Avatar',
+      uploadAvatarHint: 'Upload an image from your computer.',
+      downloadAvatarHint: 'Download the current avatar.',
+      uploadSuccessToast: 'Avatar Uploaded!',
+      uploadSuccessToastDesc: 'Your new avatar has been set.',
+      uploadErrorToast: 'Upload Failed',
+      uploadErrorToastDesc: 'Please select a valid image file.',
     },
     id: {
       currentAvatar: 'Avatar Saat Ini',
@@ -282,6 +291,15 @@ const translations = {
       saveUserRoleButton: 'Simpan Peran',
       userRoleUpdatedToast: 'Peran Diperbarui!',
       userRoleUpdatedToastDesc: 'Peran Anda telah diatur.',
+      uploadAvatarTitle: 'Unggah & Unduh',
+      uploadAvatarButton: 'Unggah Avatar',
+      downloadAvatarButton: 'Unduh Avatar',
+      uploadAvatarHint: 'Unggah gambar dari komputer Anda.',
+      downloadAvatarHint: 'Unduh avatar saat ini.',
+      uploadSuccessToast: 'Avatar Diunggah!',
+      uploadSuccessToastDesc: 'Avatar baru Anda telah ditetapkan.',
+      uploadErrorToast: 'Gagal Mengunggah',
+      uploadErrorToastDesc: 'Silakan pilih file gambar yang valid.',
     }
   };
 
@@ -315,6 +333,7 @@ export function SettingsForm({
   const { toast } = useToast();
   const [isAvatarLoading, setIsAvatarLoading] = useState(false);
   const [isStyleLoading, setIsStyleLoading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const t = translations[currentLanguage];
   const characterInitials = currentCharacterName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
@@ -476,6 +495,36 @@ export function SettingsForm({
     });
   }
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatarUrl(reader.result as string);
+        toast({
+          title: t.uploadSuccessToast,
+          description: t.uploadSuccessToastDesc,
+        });
+      };
+      reader.readAsDataURL(file);
+    } else {
+      toast({
+        variant: "destructive",
+        title: t.uploadErrorToast,
+        description: t.uploadErrorToastDesc,
+      });
+    }
+  };
+
+  const handleDownload = () => {
+    const link = document.createElement("a");
+    link.href = currentAvatarUrl;
+    link.download = "avatar.png";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
 
   return (
     <Tabs defaultValue="character" className="w-full">
@@ -486,7 +535,8 @@ export function SettingsForm({
       </TabsList>
       <TabsContent value="character">
         <div className="space-y-4 pt-4">
-          {/* Avatar Section */}
+          
+           {/* Avatar Section */}
           <div className="space-y-4">
             <h3 className="text-lg font-medium">{t.avatarTitle}</h3>
             <div className="flex flex-col items-center gap-2 pt-2 pb-4">
@@ -547,6 +597,29 @@ export function SettingsForm({
               </form>
             </Form>
           </div>
+
+          {/* Upload and Download Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium">{t.uploadAvatarTitle}</h3>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              accept="image/*"
+              className="hidden"
+            />
+            <div className="grid grid-cols-2 gap-2">
+                <Button variant="outline" onClick={() => fileInputRef.current?.click()}>
+                    <Upload className="mr-2 h-4 w-4" />
+                    {t.uploadAvatarButton}
+                </Button>
+                <Button variant="outline" onClick={handleDownload}>
+                    <Download className="mr-2 h-4 w-4" />
+                    {t.downloadAvatarButton}
+                </Button>
+            </div>
+          </div>
+
 
           {/* Character Name Section */}
           <div className="space-y-4">

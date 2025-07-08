@@ -1,3 +1,4 @@
+
 // src/ai/flows/generate-avatar.ts
 'use server';
 /**
@@ -41,7 +42,7 @@ const generateAvatarPrompt = ai.definePrompt({
   name: 'generateAvatarPrompt',
   input: {schema: GenerateAvatarInputSchema},
   output: {schema: GenerateAvatarOutputSchema},
-  prompt: `Create a high-quality, detailed, and clear avatar with a resolution of 1024x1024 pixels. The image must be a square (1:1 aspect ratio) and visually impressive, suitable for a profile picture. Base the avatar on the following description: {{{description}}}. {{#if negativePrompt}}Do not include the following: {{{negativePrompt}}}.{{/if}} Return the image as a data URI.`,
+  prompt: `Create a high-quality, detailed, and clear avatar with a resolution of 512x512 pixels. The image must be a square (1:1 aspect ratio) and visually impressive, suitable for a profile picture. Base the avatar on the following description: {{{description}}}. {{#if negativePrompt}}Do not include the following: {{{negativePrompt}}}.{{/if}} Return the image as a data URI.`,
   config: {
     safetySettings: [
       {
@@ -71,7 +72,7 @@ const generateAvatarFlow = ai.defineFlow(
     outputSchema: GenerateAvatarOutputSchema,
   },
   async input => {
-    let fullPrompt = `Create a high-quality, detailed, and clear avatar with a resolution of 1024x1024 pixels. The image must be a square (1:1 aspect ratio) and visually impressive, suitable for a profile picture. Base the avatar on the following description: ${input.description}`;
+    let fullPrompt = `Create a high-quality, detailed, and clear avatar with a resolution of 512x512 pixels. The image must be a square (1:1 aspect ratio) and visually impressive, suitable for a profile picture. Base the avatar on the following description: ${input.description}`;
 
     if (input.negativePrompt) {
       fullPrompt += `. --- IMPORTANT: Do not include any of the following elements or styles: ${input.negativePrompt}`;
