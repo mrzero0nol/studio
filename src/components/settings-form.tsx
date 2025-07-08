@@ -792,6 +792,67 @@ export function SettingsForm({
       </TabsContent>
       <TabsContent value="general">
         <div className="space-y-6 pt-4">
+          <div className="space-y-2 rounded-lg border border-destructive/50 bg-destructive/5 p-3">
+            <h3 className="text-lg font-semibold tracking-tight text-destructive">{t.dangerZoneTitle}</h3>
+            <p className="text-sm text-destructive/80">
+              {t.clearChatDialogDescription}
+            </p>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive" size="sm" className="w-full">
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  {t.clearChatButtonLabel}
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>{t.clearChatDialogTitle}</AlertDialogTitle>
+                  <p className="text-sm text-muted-foreground">
+                    {t.clearChatDialogDescription}
+                  </p>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t.dialogCancel}</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => {
+                      handleClearChat();
+                    }}>
+                    {t.dialogConfirm}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
+
+          <div className="space-y-3">
+            <h3 className="text-lg font-semibold tracking-tight">{t.darkModeTitle}</h3>
+            <div className="flex flex-row items-center justify-between rounded-lg border p-3">
+                <div className="space-y-0.5">
+                  <Label htmlFor="dark-mode-switch" className="text-base">{t.darkModeLabel}</Label>
+                  <p className="text-sm text-muted-foreground">{t.darkModeHint}</p>
+                </div>
+                <Switch
+                  id="dark-mode-switch"
+                  checked={currentDarkMode}
+                  onCheckedChange={setDarkMode}
+                />
+              </div>
+          </div>
+
+          <div className="space-y-3">
+            <h3 className="text-lg font-semibold tracking-tight">{t.storyModeTitle}</h3>
+            <div className="flex flex-row items-center justify-between rounded-lg border p-3">
+                <div className="space-y-0.5">
+                  <Label htmlFor="story-mode-switch" className="text-base">{t.storyModeLabel}</Label>
+                  <p className="text-sm text-muted-foreground">{t.storyModeHint}</p>
+                </div>
+                <Switch
+                  id="story-mode-switch"
+                  checked={currentStoryMode}
+                  onCheckedChange={setStoryMode}
+                />
+              </div>
+          </div>
+
           <div className="space-y-3">
             <h3 className="text-lg font-semibold tracking-tight">{t.themeTitle}</h3>
             <Form {...themeForm}>
@@ -879,67 +940,6 @@ export function SettingsForm({
                 </form>
               </Form>
             </div>
-
-          <div className="space-y-3">
-            <h3 className="text-lg font-semibold tracking-tight">{t.storyModeTitle}</h3>
-            <div className="flex flex-row items-center justify-between rounded-lg border p-3">
-                <div className="space-y-0.5">
-                  <Label htmlFor="story-mode-switch" className="text-base">{t.storyModeLabel}</Label>
-                  <p className="text-sm text-muted-foreground">{t.storyModeHint}</p>
-                </div>
-                <Switch
-                  id="story-mode-switch"
-                  checked={currentStoryMode}
-                  onCheckedChange={setStoryMode}
-                />
-              </div>
-          </div>
-
-          <div className="space-y-3">
-            <h3 className="text-lg font-semibold tracking-tight">{t.darkModeTitle}</h3>
-            <div className="flex flex-row items-center justify-between rounded-lg border p-3">
-                <div className="space-y-0.5">
-                  <Label htmlFor="dark-mode-switch" className="text-base">{t.darkModeLabel}</Label>
-                  <p className="text-sm text-muted-foreground">{t.darkModeHint}</p>
-                </div>
-                <Switch
-                  id="dark-mode-switch"
-                  checked={currentDarkMode}
-                  onCheckedChange={setDarkMode}
-                />
-              </div>
-          </div>
-
-          <div className="space-y-2 rounded-lg border border-destructive/50 bg-destructive/5 p-3">
-            <h3 className="text-lg font-semibold tracking-tight text-destructive">{t.dangerZoneTitle}</h3>
-            <p className="text-sm text-destructive/80">
-              {t.clearChatDialogDescription}
-            </p>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button variant="destructive" size="sm" className="w-full">
-                  <Trash2 className="mr-2 h-4 w-4" />
-                  {t.clearChatButtonLabel}
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>{t.clearChatDialogTitle}</AlertDialogTitle>
-                  <p className="text-sm text-muted-foreground">
-                    {t.clearChatDialogDescription}
-                  </p>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>{t.dialogCancel}</AlertDialogCancel>
-                  <AlertDialogAction onClick={() => {
-                      handleClearChat();
-                    }}>
-                    {t.dialogConfirm}
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </div>
         </div>
       </TabsContent>
     </Tabs>
