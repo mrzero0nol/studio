@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Loader2, Wand2, Trash2, Upload, Download } from "lucide-react";
+import { Loader2, Wand2, Trash2, Upload, Download, X } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import {
@@ -40,6 +40,13 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 const avatarFormSchema = z.object({
   description: z.string().min(10, {
@@ -205,6 +212,7 @@ const translations = {
       uploadSuccessToastDesc: 'Your new avatar has been set.',
       uploadErrorToast: 'Upload Failed',
       uploadErrorToastDesc: 'Please select a valid image file.',
+      avatarPreviewTitle: "Avatar Preview",
     },
     id: {
       currentAvatar: 'Avatar Saat Ini',
@@ -300,6 +308,7 @@ const translations = {
       uploadSuccessToastDesc: 'Avatar baru Anda telah ditetapkan.',
       uploadErrorToast: 'Gagal Mengunggah',
       uploadErrorToastDesc: 'Silakan pilih file gambar yang valid.',
+      avatarPreviewTitle: "Pratinjau Avatar",
     }
   };
 
@@ -333,6 +342,7 @@ export function SettingsForm({
   const { toast } = useToast();
   const [isAvatarLoading, setIsAvatarLoading] = useState(false);
   const [isStyleLoading, setIsStyleLoading] = useState(false);
+  const [isAvatarPreviewOpen, setIsAvatarPreviewOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const t = translations[currentLanguage];
@@ -540,11 +550,25 @@ export function SettingsForm({
           <div className="space-y-4">
             <h3 className="text-lg font-medium">{t.avatarTitle}</h3>
             <div className="flex flex-col items-center gap-2 pt-2 pb-4">
-              <Label htmlFor="avatar-preview">{t.currentAvatar}</Label>
-              <Avatar id="avatar-preview" className="w-24 h-24 border-2 border-primary/50">
-                <AvatarImage src={currentAvatarUrl} alt="Current Avatar" data-ai-hint="woman portrait" />
-                <AvatarFallback>{characterInitials}</AvatarFallback>
-              </Avatar>
+              <Label>{t.currentAvatar}</Label>
+              <Dialog open={isAvatarPreviewOpen} onOpenChange={setIsAvatarPreviewOpen}>
+                <DialogTrigger asChild>
+                  <Avatar className="w-24 h-24 border-2 border-primary/50 cursor-pointer hover:opacity-80 transition-opacity">
+                    <AvatarImage src={currentAvatarUrl} alt="Current Avatar" data-ai-hint="woman portrait" />
+                    <AvatarFallback>{characterInitials}</AvatarFallback>
+                  </Avatar>
+                </DialogTrigger>
+                <DialogContent className="p-0 bg-transparent border-none shadow-none max-w-lg">
+                    <DialogTitle className="sr-only">{t.avatarPreviewTitle}</DialogTitle>
+                    <img src={currentAvatarUrl} alt="Enlarged Avatar" className="rounded-md w-full h-auto object-contain" />
+                     <DialogClose asChild>
+                        <Button variant="ghost" size="icon" className="absolute right-2 top-2 rounded-full p-1.5 bg-black/50 text-white hover:bg-black/70 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 h-8 w-8">
+                            <X className="h-5 w-5" />
+                            <span className="sr-only">Close</span>
+                        </Button>
+                    </DialogClose>
+                </DialogContent>
+              </Dialog>
             </div>
             <Form {...avatarForm}>
               <form onSubmit={avatarForm.handleSubmit(onAvatarSubmit)} className="space-y-4">
