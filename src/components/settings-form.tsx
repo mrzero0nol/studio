@@ -544,8 +544,8 @@ export function SettingsForm({
         <TabsTrigger value="general">{t.generalSettingsTitle}</TabsTrigger>
       </TabsList>
       <TabsContent value="character">
-        <div className="space-y-6 pt-4">
-          <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
+        <div className="space-y-8 pt-4">
+          <div className="space-y-4">
             <h3 className="text-lg font-semibold tracking-tight">{t.avatarTitle}</h3>
             <div className="flex flex-col items-center gap-2 pt-2 pb-4 text-center">
               <Label>{t.currentAvatar}</Label>
@@ -608,7 +608,7 @@ export function SettingsForm({
                     </FormItem>
                   )}
                 />
-                <Button type="submit" disabled={isAvatarLoading} className="w-full">
+                <Button type="submit" size="sm" disabled={isAvatarLoading} className="w-full">
                   {isAvatarLoading ? (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   ) : (
@@ -620,7 +620,7 @@ export function SettingsForm({
             </Form>
           </div>
 
-          <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
+          <div className="space-y-4">
             <h3 className="text-lg font-semibold tracking-tight">{t.uploadAvatarTitle}</h3>
             <input
               type="file"
@@ -633,11 +633,11 @@ export function SettingsForm({
               {t.uploadAvatarHint}
             </p>
             <div className="grid grid-cols-2 gap-2">
-                <Button variant="outline" onClick={() => fileInputRef.current?.click()}>
+                <Button variant="outline" size="sm" onClick={() => fileInputRef.current?.click()}>
                     <Upload className="mr-2 h-4 w-4" />
                     {t.uploadAvatarButton}
                 </Button>
-                <Button variant="outline" onClick={handleDownload}>
+                <Button variant="outline" size="sm" onClick={handleDownload}>
                     <Download className="mr-2 h-4 w-4" />
                     {t.downloadAvatarButton}
                 </Button>
@@ -645,7 +645,7 @@ export function SettingsForm({
           </div>
 
 
-          <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
+          <div className="space-y-4">
             <h3 className="text-lg font-semibold tracking-tight">{t.nameTitle}</h3>
             <Form {...nameForm}>
               <form onSubmit={nameForm.handleSubmit(onNameSubmit)} className="space-y-4">
@@ -665,14 +665,14 @@ export function SettingsForm({
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full">
+                <Button type="submit" size="sm" className="w-full">
                   {t.saveNameButton}
                 </Button>
               </form>
             </Form>
           </div>
 
-          <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
+          <div className="space-y-4">
             <h3 className="text-lg font-semibold tracking-tight">{t.styleTitle}</h3>
             <Form {...styleForm}>
               <form onSubmit={styleForm.handleSubmit(onStyleSubmit)} className="space-y-4">
@@ -692,7 +692,7 @@ export function SettingsForm({
                     </FormItem>
                   )}
                 />
-                <Button type="submit" disabled={isStyleLoading} className="w-full">
+                <Button type="submit" size="sm" disabled={isStyleLoading} className="w-full">
                   {isStyleLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   {t.saveStyleButton}
                 </Button>
@@ -702,8 +702,8 @@ export function SettingsForm({
         </div>
       </TabsContent>
        <TabsContent value="user">
-        <div className="space-y-6 pt-4">
-          <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
+        <div className="space-y-8 pt-4">
+          <div className="space-y-4">
             <h3 className="text-lg font-semibold tracking-tight">{t.userNameTitle}</h3>
             <Form {...userNameForm}>
               <form onSubmit={userNameForm.handleSubmit(onUserNameSubmit)} className="space-y-4">
@@ -721,12 +721,12 @@ export function SettingsForm({
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full">{t.saveUserNameButton}</Button>
+                <Button type="submit" size="sm" className="w-full">{t.saveUserNameButton}</Button>
               </form>
             </Form>
           </div>
 
-          <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
+          <div className="space-y-4">
             <h3 className="text-lg font-semibold tracking-tight">{t.userGenderTitle}</h3>
             <Form {...userGenderForm}>
               <form onSubmit={userGenderForm.handleSubmit(onUserGenderSubmit)} className="space-y-4">
@@ -761,12 +761,12 @@ export function SettingsForm({
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full">{t.saveUserGenderButton}</Button>
+                <Button type="submit" size="sm" className="w-full">{t.saveUserGenderButton}</Button>
               </form>
             </Form>
           </div>
 
-          <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
+          <div className="space-y-4">
             <h3 className="text-lg font-semibold tracking-tight">{t.userRoleTitle}</h3>
             <Form {...userRoleForm}>
               <form onSubmit={userRoleForm.handleSubmit(onUserRoleSubmit)} className="space-y-4">
@@ -784,15 +784,15 @@ export function SettingsForm({
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full">{t.saveUserRoleButton}</Button>
+                <Button type="submit" size="sm" className="w-full">{t.saveUserRoleButton}</Button>
               </form>
             </Form>
           </div>
         </div>
       </TabsContent>
       <TabsContent value="general">
-        <div className="space-y-6 pt-4">
-          <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
+        <div className="space-y-8 pt-4">
+          <div className="space-y-4">
             <h3 className="text-lg font-semibold tracking-tight">{t.themeTitle}</h3>
             <Form {...themeForm}>
               <form onSubmit={themeForm.handleSubmit(onThemeSubmit)} className="space-y-4">
@@ -833,14 +833,14 @@ export function SettingsForm({
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full">
+                <Button type="submit" size="sm" className="w-full">
                   {t.saveThemeButton}
                 </Button>
               </form>
             </Form>
           </div>
 
-           <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
+           <div className="space-y-4">
               <h3 className="text-lg font-semibold tracking-tight">{t.languageTitle}</h3>
               <Form {...languageForm}>
                 <form onSubmit={languageForm.handleSubmit(onLanguageSubmit)} className="space-y-4">
@@ -873,14 +873,14 @@ export function SettingsForm({
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" className="w-full">
+                  <Button type="submit" size="sm" className="w-full">
                     {t.saveLanguageButton}
                   </Button>
                 </form>
               </Form>
             </div>
 
-          <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
+          <div className="space-y-4">
             <h3 className="text-lg font-semibold tracking-tight">{t.storyModeTitle}</h3>
             <div className="flex flex-row items-center justify-between rounded-lg border p-4">
                 <div className="space-y-0.5">
@@ -895,7 +895,7 @@ export function SettingsForm({
               </div>
           </div>
 
-          <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
+          <div className="space-y-4">
             <h3 className="text-lg font-semibold tracking-tight">{t.darkModeTitle}</h3>
             <div className="flex flex-row items-center justify-between rounded-lg border p-4">
                 <div className="space-y-0.5">
@@ -910,14 +910,14 @@ export function SettingsForm({
               </div>
           </div>
 
-          <div className="space-y-2 rounded-xl border border-destructive/50 bg-destructive/5 p-6 shadow-sm">
+          <div className="space-y-2 rounded-lg border border-destructive/50 bg-destructive/5 p-4">
             <h3 className="text-lg font-semibold tracking-tight text-destructive">{t.dangerZoneTitle}</h3>
             <p className="text-sm text-destructive/80">
               {t.clearChatDialogDescription}
             </p>
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="destructive" className="w-full">
+                <Button variant="destructive" size="sm" className="w-full">
                   <Trash2 className="mr-2 h-4 w-4" />
                   {t.clearChatButtonLabel}
                 </Button>
