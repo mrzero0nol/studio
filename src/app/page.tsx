@@ -70,7 +70,7 @@ export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [storyMode, setStoryMode] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
-  const [avatarDescription, setAvatarDescription] = useState("A beautiful woman with long flowing hair, smiling gently.");
+  const [avatarDescription, setAvatarDescription] = useState("A photorealistic image of a beautiful real human woman with long flowing hair, smiling gently.");
   const [avatarNegativePrompt, setAvatarNegativePrompt] = useState("");
   const [userName, setUserName] = useState("User");
   const [userGender, setUserGender] = useState("not_specified");
@@ -278,7 +278,7 @@ export default function Home() {
 
   return (
     <div className="flex h-full flex-col bg-background font-body">
-      <header className="flex items-center justify-between p-3 border-b shadow-sm bg-card/50 backdrop-blur-sm sticky top-0 z-10">
+      <header className="flex items-center justify-between p-3 border-b shadow-md bg-card/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="flex items-center gap-3">
           <Dialog open={isAvatarPreviewOpen} onOpenChange={setIsAvatarPreviewOpen}>
             <DialogTrigger asChild>
@@ -387,7 +387,7 @@ export default function Home() {
         </ScrollArea>
       </main>
 
-      <footer className="p-4 border-t bg-card/50">
+      <footer className="p-4 border-t bg-card/80 backdrop-blur-sm">
         <div className="flex items-center gap-3">
           <form onSubmit={handleSubmit} className="flex-1 flex items-center gap-3">
             <Input

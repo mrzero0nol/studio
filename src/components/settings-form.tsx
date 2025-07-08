@@ -544,12 +544,10 @@ export function SettingsForm({
         <TabsTrigger value="general">{t.generalSettingsTitle}</TabsTrigger>
       </TabsList>
       <TabsContent value="character">
-        <div className="space-y-4 pt-4">
-          
-           {/* Avatar Section */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">{t.avatarTitle}</h3>
-            <div className="flex flex-col items-center gap-2 pt-2 pb-4">
+        <div className="space-y-6 pt-4">
+          <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
+            <h3 className="text-lg font-semibold tracking-tight">{t.avatarTitle}</h3>
+            <div className="flex flex-col items-center gap-2 pt-2 pb-4 text-center">
               <Label>{t.currentAvatar}</Label>
               <Dialog open={isAvatarPreviewOpen} onOpenChange={setIsAvatarPreviewOpen}>
                 <DialogTrigger asChild>
@@ -622,9 +620,8 @@ export function SettingsForm({
             </Form>
           </div>
 
-          {/* Upload and Download Section */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">{t.uploadAvatarTitle}</h3>
+          <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
+            <h3 className="text-lg font-semibold tracking-tight">{t.uploadAvatarTitle}</h3>
             <input
               type="file"
               ref={fileInputRef}
@@ -632,6 +629,9 @@ export function SettingsForm({
               accept="image/*"
               className="hidden"
             />
+             <p className="text-sm text-muted-foreground">
+              {t.uploadAvatarHint}
+            </p>
             <div className="grid grid-cols-2 gap-2">
                 <Button variant="outline" onClick={() => fileInputRef.current?.click()}>
                     <Upload className="mr-2 h-4 w-4" />
@@ -645,9 +645,8 @@ export function SettingsForm({
           </div>
 
 
-          {/* Character Name Section */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">{t.nameTitle}</h3>
+          <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
+            <h3 className="text-lg font-semibold tracking-tight">{t.nameTitle}</h3>
             <Form {...nameForm}>
               <form onSubmit={nameForm.handleSubmit(onNameSubmit)} className="space-y-4">
                 <FormField
@@ -673,9 +672,8 @@ export function SettingsForm({
             </Form>
           </div>
 
-          {/* Interaction Style Section */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">{t.styleTitle}</h3>
+          <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
+            <h3 className="text-lg font-semibold tracking-tight">{t.styleTitle}</h3>
             <Form {...styleForm}>
               <form onSubmit={styleForm.handleSubmit(onStyleSubmit)} className="space-y-4">
                 <FormField
@@ -685,7 +683,7 @@ export function SettingsForm({
                     <FormItem>
                       <FormLabel>{t.styleLabel}</FormLabel>
                       <FormControl>
-                        <Input placeholder={t.stylePlaceholder} {...field} />
+                        <Textarea placeholder={t.stylePlaceholder} {...field} />
                       </FormControl>
                       <p className="text-sm text-muted-foreground">
                         {t.styleHint}
@@ -704,10 +702,9 @@ export function SettingsForm({
         </div>
       </TabsContent>
        <TabsContent value="user">
-        <div className="space-y-4 pt-4">
-          {/* User Name Section */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">{t.userNameTitle}</h3>
+        <div className="space-y-6 pt-4">
+          <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
+            <h3 className="text-lg font-semibold tracking-tight">{t.userNameTitle}</h3>
             <Form {...userNameForm}>
               <form onSubmit={userNameForm.handleSubmit(onUserNameSubmit)} className="space-y-4">
                 <FormField
@@ -729,9 +726,8 @@ export function SettingsForm({
             </Form>
           </div>
 
-          {/* User Gender Section */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">{t.userGenderTitle}</h3>
+          <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
+            <h3 className="text-lg font-semibold tracking-tight">{t.userGenderTitle}</h3>
             <Form {...userGenderForm}>
               <form onSubmit={userGenderForm.handleSubmit(onUserGenderSubmit)} className="space-y-4">
                 <FormField
@@ -770,9 +766,8 @@ export function SettingsForm({
             </Form>
           </div>
 
-          {/* User Role Section */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">{t.userRoleTitle}</h3>
+          <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
+            <h3 className="text-lg font-semibold tracking-tight">{t.userRoleTitle}</h3>
             <Form {...userRoleForm}>
               <form onSubmit={userRoleForm.handleSubmit(onUserRoleSubmit)} className="space-y-4">
                 <FormField
@@ -796,112 +791,9 @@ export function SettingsForm({
         </div>
       </TabsContent>
       <TabsContent value="general">
-        <div className="space-y-4 pt-4">
-          {/* Clear Chat Section */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium text-destructive/90">{t.dangerZoneTitle}</h3>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button variant="destructive" className="w-full">
-                  <Trash2 className="mr-2 h-4 w-4" />
-                  {t.clearChatButtonLabel}
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>{t.clearChatDialogTitle}</AlertDialogTitle>
-                  <p className="text-sm text-muted-foreground">
-                    {t.clearChatDialogDescription}
-                  </p>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>{t.dialogCancel}</AlertDialogCancel>
-                  <AlertDialogAction onClick={() => {
-                      handleClearChat();
-                    }}>
-                    {t.dialogConfirm}
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </div>
-          
-          {/* Story Mode Section */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">{t.storyModeTitle}</h3>
-            <div className="flex flex-row items-center justify-between rounded-lg border p-4">
-                <div className="space-y-0.5">
-                  <Label htmlFor="story-mode-switch" className="text-base">{t.storyModeLabel}</Label>
-                  <p className="text-sm text-muted-foreground">{t.storyModeHint}</p>
-                </div>
-                <Switch
-                  id="story-mode-switch"
-                  checked={currentStoryMode}
-                  onCheckedChange={setStoryMode}
-                />
-              </div>
-          </div>
-
-          {/* Dark Mode Section */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">{t.darkModeTitle}</h3>
-            <div className="flex flex-row items-center justify-between rounded-lg border p-4">
-                <div className="space-y-0.5">
-                  <Label htmlFor="dark-mode-switch" className="text-base">{t.darkModeLabel}</Label>
-                  <p className="text-sm text-muted-foreground">{t.darkModeHint}</p>
-                </div>
-                <Switch
-                  id="dark-mode-switch"
-                  checked={currentDarkMode}
-                  onCheckedChange={setDarkMode}
-                />
-              </div>
-          </div>
-
-          {/* Language Section */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">{t.languageTitle}</h3>
-            <Form {...languageForm}>
-              <form onSubmit={languageForm.handleSubmit(onLanguageSubmit)} className="space-y-4">
-                <FormField
-                  control={languageForm.control}
-                  name="language"
-                  render={({ field }) => (
-                    <FormItem className="space-y-3">
-                      <FormLabel>{t.languageLabel}</FormLabel>
-                      <FormControl>
-                        <RadioGroup
-                          onValueChange={field.onChange}
-                          value={field.value}
-                          className="flex flex-col space-y-1"
-                        >
-                          <div className="flex items-center space-x-3 space-y-0">
-                            <RadioGroupItem value="en" id="lang-en" />
-                            <Label htmlFor="lang-en" className="font-normal">{t.english}</Label>
-                          </div>
-                          <div className="flex items-center space-x-3 space-y-0">
-                            <RadioGroupItem value="id" id="lang-id" />
-                            <Label htmlFor="lang-id" className="font-normal">{t.indonesian}</Label>
-                          </div>
-                        </RadioGroup>
-                      </FormControl>
-                      <p className="text-sm text-muted-foreground">
-                        {t.languageHint}
-                      </p>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button type="submit" className="w-full">
-                  {t.saveLanguageButton}
-                </Button>
-              </form>
-            </Form>
-          </div>
-
-          {/* UI Theme Section */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">{t.themeTitle}</h3>
+        <div className="space-y-6 pt-4">
+          <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
+            <h3 className="text-lg font-semibold tracking-tight">{t.themeTitle}</h3>
             <Form {...themeForm}>
               <form onSubmit={themeForm.handleSubmit(onThemeSubmit)} className="space-y-4">
                 <FormField
@@ -946,6 +838,107 @@ export function SettingsForm({
                 </Button>
               </form>
             </Form>
+          </div>
+
+           <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
+              <h3 className="text-lg font-semibold tracking-tight">{t.languageTitle}</h3>
+              <Form {...languageForm}>
+                <form onSubmit={languageForm.handleSubmit(onLanguageSubmit)} className="space-y-4">
+                  <FormField
+                    control={languageForm.control}
+                    name="language"
+                    render={({ field }) => (
+                      <FormItem className="space-y-3">
+                        <FormLabel>{t.languageLabel}</FormLabel>
+                        <FormControl>
+                          <RadioGroup
+                            onValueChange={field.onChange}
+                            value={field.value}
+                            className="flex flex-col space-y-1"
+                          >
+                            <div className="flex items-center space-x-3 space-y-0">
+                              <RadioGroupItem value="en" id="lang-en" />
+                              <Label htmlFor="lang-en" className="font-normal">{t.english}</Label>
+                            </div>
+                            <div className="flex items-center space-x-3 space-y-0">
+                              <RadioGroupItem value="id" id="lang-id" />
+                              <Label htmlFor="lang-id" className="font-normal">{t.indonesian}</Label>
+                            </div>
+                          </RadioGroup>
+                        </FormControl>
+                        <p className="text-sm text-muted-foreground">
+                          {t.languageHint}
+                        </p>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button type="submit" className="w-full">
+                    {t.saveLanguageButton}
+                  </Button>
+                </form>
+              </Form>
+            </div>
+
+          <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
+            <h3 className="text-lg font-semibold tracking-tight">{t.storyModeTitle}</h3>
+            <div className="flex flex-row items-center justify-between rounded-lg border p-4">
+                <div className="space-y-0.5">
+                  <Label htmlFor="story-mode-switch" className="text-base">{t.storyModeLabel}</Label>
+                  <p className="text-sm text-muted-foreground">{t.storyModeHint}</p>
+                </div>
+                <Switch
+                  id="story-mode-switch"
+                  checked={currentStoryMode}
+                  onCheckedChange={setStoryMode}
+                />
+              </div>
+          </div>
+
+          <div className="space-y-4 rounded-xl border bg-card p-6 shadow-sm">
+            <h3 className="text-lg font-semibold tracking-tight">{t.darkModeTitle}</h3>
+            <div className="flex flex-row items-center justify-between rounded-lg border p-4">
+                <div className="space-y-0.5">
+                  <Label htmlFor="dark-mode-switch" className="text-base">{t.darkModeLabel}</Label>
+                  <p className="text-sm text-muted-foreground">{t.darkModeHint}</p>
+                </div>
+                <Switch
+                  id="dark-mode-switch"
+                  checked={currentDarkMode}
+                  onCheckedChange={setDarkMode}
+                />
+              </div>
+          </div>
+
+          <div className="space-y-2 rounded-xl border border-destructive/50 bg-destructive/5 p-6 shadow-sm">
+            <h3 className="text-lg font-semibold tracking-tight text-destructive">{t.dangerZoneTitle}</h3>
+            <p className="text-sm text-destructive/80">
+              {t.clearChatDialogDescription}
+            </p>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive" className="w-full">
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  {t.clearChatButtonLabel}
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>{t.clearChatDialogTitle}</AlertDialogTitle>
+                  <p className="text-sm text-muted-foreground">
+                    {t.clearChatDialogDescription}
+                  </p>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t.dialogCancel}</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => {
+                      handleClearChat();
+                    }}>
+                    {t.dialogConfirm}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </div>
       </TabsContent>
