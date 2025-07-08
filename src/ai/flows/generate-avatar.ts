@@ -72,7 +72,7 @@ const generateAvatarFlow = ai.defineFlow(
     outputSchema: GenerateAvatarOutputSchema,
   },
   async input => {
-    let fullPrompt = `Create a high-quality, detailed, and clear avatar with a resolution of 512x512 pixels. The image must be a square (1:1 aspect ratio) and visually impressive, suitable for a profile picture. Base the avatar on the following description: ${input.description}`;
+    let fullPrompt = `Create a photorealistic, high-quality, detailed, and clear avatar of a real human. The image must be a square (1:1 aspect ratio) with a resolution of 512x512 pixels, suitable for a profile picture. The generated person should look like a real, lifelike human. Base the avatar on the following description: ${input.description}`;
 
     if (input.negativePrompt) {
       fullPrompt += `. --- IMPORTANT: Do not include any of the following elements or styles: ${input.negativePrompt}`;

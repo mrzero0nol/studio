@@ -542,7 +542,7 @@ export function SettingsForm({
             <div className="flex flex-col items-center gap-2 pt-2 pb-4">
               <Label htmlFor="avatar-preview">{t.currentAvatar}</Label>
               <Avatar id="avatar-preview" className="w-24 h-24 border-2 border-primary/50">
-                <AvatarImage src={currentAvatarUrl} alt="Current Avatar" data-ai-hint="robot avatar" />
+                <AvatarImage src={currentAvatarUrl} alt="Current Avatar" data-ai-hint="woman portrait" />
                 <AvatarFallback>{characterInitials}</AvatarFallback>
               </Avatar>
             </div>

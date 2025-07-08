@@ -64,13 +64,13 @@ export default function Home() {
   // Initialize state with default values for SSR and initial client render
   const [theme, setTheme] = useState<Theme>('default');
   const [language, setLanguage] = useState<'en' | 'id'>('en');
-  const [avatarUrl, setAvatarUrl] = useState("https://placehold.co/128x128/9400D3/FFFFFF.png?text=CC");
+  const [avatarUrl, setAvatarUrl] = useState("https://placehold.co/512x512.png");
   const [interactionStyle, setInteractionStyle] = useState("a friendly and empathetic companion who communicates in a natural, conversational manner, like a real person. Use casual language, be expressive with emojis, and avoid sounding robotic.");
   const [characterName, setCharacterName] = useState("Custom Chat Character");
   const [messages, setMessages] = useState<Message[]>([]);
   const [storyMode, setStoryMode] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
-  const [avatarDescription, setAvatarDescription] = useState("A friendly, futuristic robot with a purple and blue color scheme.");
+  const [avatarDescription, setAvatarDescription] = useState("A beautiful woman with long flowing hair, smiling gently.");
   const [avatarNegativePrompt, setAvatarNegativePrompt] = useState("");
   const [userName, setUserName] = useState("User");
   const [userGender, setUserGender] = useState("not_specified");
@@ -283,7 +283,7 @@ export default function Home() {
           <Dialog open={isAvatarPreviewOpen} onOpenChange={setIsAvatarPreviewOpen}>
             <DialogTrigger asChild>
               <Avatar className="w-12 h-12 border-2 border-primary/50 cursor-pointer hover:opacity-80 transition-opacity">
-                <AvatarImage src={avatarUrl} alt="Custom Chat Character Avatar" data-ai-hint="robot avatar" />
+                <AvatarImage src={avatarUrl} alt="Custom Chat Character Avatar" data-ai-hint="woman portrait" />
                 <AvatarFallback>{characterInitials}</AvatarFallback>
               </Avatar>
             </DialogTrigger>
@@ -328,7 +328,6 @@ export default function Home() {
                   setAvatarUrl={setAvatarUrl}
                   setInteractionStyle={setInteractionStyle}
                   currentStyle={interactionStyle}
-                  closeSheet={() => setSheetOpen(false)}
                   setCharacterName={setCharacterName}
                   currentCharacterName={characterName}
                   setLanguage={setLanguage}
