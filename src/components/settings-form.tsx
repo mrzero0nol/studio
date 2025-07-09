@@ -544,7 +544,7 @@ export function SettingsForm({
         <TabsTrigger value="general">{t.generalSettingsTitle}</TabsTrigger>
       </TabsList>
       <TabsContent value="character">
-        <div className="space-y-6 pt-4">
+        <div className="space-y-4 pt-2">
           <div className="space-y-3">
             <h3 className="text-lg font-semibold tracking-tight">{t.avatarTitle}</h3>
             <div className="flex flex-col items-center gap-2 pt-2 pb-4 text-center">
@@ -702,7 +702,7 @@ export function SettingsForm({
         </div>
       </TabsContent>
        <TabsContent value="user">
-        <div className="space-y-6 pt-4">
+        <div className="space-y-4 pt-2">
           <div className="space-y-3">
             <h3 className="text-lg font-semibold tracking-tight">{t.userNameTitle}</h3>
             <Form {...userNameForm}>
@@ -791,7 +791,7 @@ export function SettingsForm({
         </div>
       </TabsContent>
       <TabsContent value="general">
-        <div className="space-y-6 pt-4">
+        <div className="space-y-4 pt-2">
           <div className="space-y-2 rounded-lg border border-destructive/50 bg-destructive/5 p-3">
             <h3 className="text-lg font-semibold tracking-tight text-destructive">{t.dangerZoneTitle}</h3>
             <p className="text-sm text-destructive/80">
