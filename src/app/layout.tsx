@@ -40,7 +40,7 @@ export default function RootLayout({
     <html lang="en" className="h-full" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeSetterScript }} />
-        <link rel="icon" href={`/favicon.ico?v=${faviconVersion}`} />
+        <link rel="icon" href={`/favicon.png?v=${faviconVersion}`} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
